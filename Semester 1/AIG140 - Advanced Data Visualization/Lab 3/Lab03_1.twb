@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20243.24.1211.0901                               -->
+<workbook original-version='18.1' source-build='2024.3.2 (20243.24.1211.0901)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AnimationOnByDefault />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='Lab03_1' inline='true' name='federated.07e2jwt0gx38ak0zs003p086anql' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='Lab03_1' name='textscan.0xeypt71dlf0iu18ktiwy02n3nap'>
+            <connection class='textscan' directory='C:/Users/JonathanChackoPattas/OneDrive - Maritime Support Solutions/Desktop/Class Notes/Seneca/AIG140 - Advanced Data Visualization/Lab 3' filename='Lab03_1.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.0xeypt71dlf0iu18ktiwy02n3nap' name='Lab03_1.csv' table='[Lab03_1#csv]' type='table'>
+          <columns character-set='UTF-16LE' header='yes' locale='en_GB' separator='&#9;'>
+            <column datatype='date' name='Date' ordinal='0' />
+            <column datatype='real' name='Decreased By' ordinal='1' />
+            <column datatype='real' name='Fund Balance Dec 31' ordinal='2' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[Lab03_1.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-16LE&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;£&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;\\t&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_GB&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Date</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[Date]</local-name>
+            <parent-name>[Lab03_1.csv]</parent-name>
+            <remote-alias>Date</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[Lab03_1.csv_D2A9581DA06E43F4862DEFBA68602437]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Decreased By</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Decreased By]</local-name>
+            <parent-name>[Lab03_1.csv]</parent-name>
+            <remote-alias>Decreased By</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[Lab03_1.csv_D2A9581DA06E43F4862DEFBA68602437]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Fund Balance Dec 31</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Fund Balance Dec 31]</local-name>
+            <parent-name>[Lab03_1.csv]</parent-name>
+            <remote-alias>Fund Balance Dec 31</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[Lab03_1.csv_D2A9581DA06E43F4862DEFBA68602437]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Lab03_1.csv' datatype='table' name='[__tableau_internal_object_id__].[Lab03_1.csv_D2A9581DA06E43F4862DEFBA68602437]' role='measure' type='quantitative' />
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[:Measure Names]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Authorized - Audit Figures:qk]&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;[federated.07e2jwt0gx38ak0zs003p086anql]&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Net Debt - Audit Figures * 2016 Unaudited:qk]&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Canada&quot;' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <object-graph>
+        <objects>
+          <object caption='Lab03_1.csv' id='Lab03_1.csv_D2A9581DA06E43F4862DEFBA68602437'>
+            <properties context=''>
+              <relation connection='textscan.0xeypt71dlf0iu18ktiwy02n3nap' name='Lab03_1.csv' table='[Lab03_1#csv]' type='table'>
+                <columns character-set='UTF-16LE' header='yes' locale='en_GB' separator='&#9;'>
+                  <column datatype='date' name='Date' ordinal='0' />
+                  <column datatype='real' name='Decreased By' ordinal='1' />
+                  <column datatype='real' name='Fund Balance Dec 31' ordinal='2' />
+                </columns>
+              </relation>
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Lab03_1'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Sussex Country Year End Fund Balance Record
+</run>
+            <run fontsize='10'>Fund Balance as of 12/31 ~ Group 2</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Lab03_1' name='federated.07e2jwt0gx38ak0zs003p086anql' />
+          </datasources>
+          <datasource-dependencies datasource='federated.07e2jwt0gx38ak0zs003p086anql'>
+            <column datatype='date' name='[Date]' role='dimension' type='ordinal' />
+            <column datatype='real' name='[Decreased By]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Fund Balance Dec 31]' role='measure' type='quantitative' />
+            <column-instance column='[Decreased By]' derivation='Sum' name='[sum:Decreased By:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Fund Balance Dec 31]' derivation='Sum' name='[sum:Fund Balance Dec 31:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Date]' derivation='Year' name='[yr:Date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Fund Balance Dec 31:qk]' scope='rows' value='' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='cols' value='false' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Decreased By:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Fund Balance Dec 31:qk]</rows>
+        <cols>[federated.07e2jwt0gx38ak0zs003p086anql].[yr:Date:ok]</cols>
+      </table>
+      <simple-id uuid='{E1EDAF8A-0715-4139-8C64-96AAB301054D}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.25' source-height='37'>
+    <window class='worksheet' maximized='true' name='Lab03_1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.07e2jwt0gx38ak0zs003p086anql].[sum:Decreased By:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.07e2jwt0gx38ak0zs003p086anql].[yr:Date:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{A7BC0271-CECB-4983-87E5-08951419B7BD}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Lab03_1' width='192'>
+      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
+      I/LY/wEM7Bg1Pp2KvgAAAABJRU5ErkJggg==
+    </thumbnail>
+  </thumbnails>
+</workbook>
