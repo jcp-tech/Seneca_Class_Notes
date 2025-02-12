@@ -31,11 +31,18 @@ def convert_ipynb_to_py(ipynb_file, output_file=None):
     except Exception as e:
         print(f"Error converting file: {e}")
 
-# Example usage:
-convert_ipynb_to_py(
-    ipynb_file = r'C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\AIG150 - Data Preparation and Governance\Week 5\Lab\AIG150_Lab5-JonathanChacko.ipynb', 
-    output_file = r"C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\Converted Files\Lab5.py"
-)
+# convert_ipynb_to_py(
+#     ipynb_file = r'C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\AIG150 - Data Preparation and Governance\Week 5\Lab\AIG150_Lab5-JonathanChacko.ipynb', 
+#     output_file = r"C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\Converted Files\Lab5.py"
+# )
+
+folderpath = "C:\\Users\\JonathanChackoPattas\\OneDrive - Maritime Support Solutions\\Desktop\\Class Notes\\Seneca\\Semester 1\\AIG150 - Data Preparation and Governance\\Cheat_Sheet_Maker\\Solution Files\\"
+for files in os.listdir(os.path.join(folderpath, "Teacher Given")):
+    if files.endswith(".ipynb"):
+        convert_ipynb_to_py(
+            ipynb_file = os.path.join(folderpath, "Teacher Given", files), 
+            output_file = os.path.join(folderpath, "Converted", files[:-6] + ".py")
+        )
 
 # if __name__ == "__main__":
 #     if len(sys.argv) < 2:
