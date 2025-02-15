@@ -41,10 +41,10 @@ def convert_ipynb_to_py(ipynb_file, output_file=None):
     except Exception as e:
         print(f"Error converting file: {e}")
 
-convert_ipynb_to_py(
-    ipynb_file = r'C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\Semester 1\AIG100 - Machine Learing\Project 1\Project 1 - AIG100 - Jonathan Chacko.ipynb', 
-    output_file = r"C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\jojo.py"
-)
+# convert_ipynb_to_py(
+#     ipynb_file = r'C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\Semester 1\AIG100 - Machine Learing\Project 1\Project 1 - AIG100 - Jonathan Chacko.ipynb', 
+#     output_file = r"C:\Users\JonathanChackoPattas\OneDrive - Maritime Support Solutions\Desktop\Class Notes\Seneca\jojo.py"
+# )
 
 # folderpath = "C:\\Users\\JonathanChackoPattas\\OneDrive - Maritime Support Solutions\\Desktop\\Class Notes\\Seneca\\Semester 1\\AIG150 - Data Preparation and Governance\\Cheat_Sheet_Maker\\Solution Files\\"
 # for files in os.listdir(os.path.join(folderpath, "Teacher Given")):
