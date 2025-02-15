@@ -1,0 +1,11 @@
+Total_bill,tip,sex,smoker,day,time,size ,sex_str
+16.99," 		1.01",Female,  No, Sun, Dinner,2,  Female
+missing," 	1.66",Male,     No, Sun ,Dinner,3,    Male
+21.01," 		3.50",Male,     No, Sun ,Dinner,3,    Male
+missing," 	3.31",   Male,     No, Sun, Dinner,2,    Male
+24.59," 		3.61",  Female,     No, Sun, Dinner,4,  Female
+missing," 	4.71",   Male,     No, Sun, Dinner,4,    Male
+8.77," 		2.00",   Male,     No, Sun, Dinner,2,    Male
+missing," 	3.12",   Male,     No, Sun, Dinner,4,    Male
+15.04," 		1.96",   Male,     No, Sun, Dinner,2,    Male
+14.78," 		3.23",   Male,     No, Sun, Dinner,2,    Male
