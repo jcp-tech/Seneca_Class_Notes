@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arrow Navigation</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      width: 80%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #007bff;
+    }
+
+    .arrow {
+      font-size: 30vw;
+      color: #007bff;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Press an Arrow Key</h1>
+    <div id="arrow" class="arrow">⬆️</div>
+  </div>
+
+  <script>
+    const title = document.getElementById('title');
+    const arrow = document.getElementById('arrow');
+
+    document.addEventListener('keydown', (event) => {
+      switch (event.key) {
+        case 'ArrowUp':
+          title.textContent = 'Go Forward';
+          arrow.textContent = '⬆️';
+          break;
+        case 'ArrowDown':
+          title.textContent = 'Go Backward';
+          arrow.textContent = '⬇️';
+          break;
+        case 'ArrowLeft':
+          title.textContent = 'Go Left';
+          arrow.textContent = '⬅️';
+          break;
+        case 'ArrowRight':
+          title.textContent = 'Go Right';
+          arrow.textContent = '➡️';
+          break;
+        case ' ': // Space key
+          title.textContent = 'Stop';
+          arrow.textContent = '⏹️';
+          break;
+        default:
+          title.textContent = 'Invalid Key';
+          arrow.textContent = '❓';
+      }
+    });
+  </script>
+</body>
+</html>
