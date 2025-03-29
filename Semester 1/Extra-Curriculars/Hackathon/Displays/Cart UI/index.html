@@ -44,42 +44,99 @@
   <script>
     const title = document.getElementById('title');
     const arrow = document.getElementById('arrow');
+    
+    // Track which keys are currently pressed
+    const keysPressed = {
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    };
 
+    // Track last direction set
+    let lastDirection = {
+      title: '',
+      arrow: '■'
+    };
+
+    // Function to update the display based on current key presses
+    function updateDisplay() {
+      // Check for diagonal combinations first
+      if (keysPressed.up && keysPressed.left) {
+        lastDirection.title = 'Go Forward-Left';
+        lastDirection.arrow = '↖';
+      } else if (keysPressed.up && keysPressed.right) {
+        lastDirection.title = 'Go Forward-Right';
+        lastDirection.arrow = '↗';
+      } else if (keysPressed.down && keysPressed.left) {
+        lastDirection.title = 'Go Backward-Left';
+        lastDirection.arrow = '↙';
+      } else if (keysPressed.down && keysPressed.right) {
+        lastDirection.title = 'Go Backward-Right';
+        lastDirection.arrow = '↘';
+      } else if (keysPressed.up) {
+        lastDirection.title = 'Go Forward';
+        lastDirection.arrow = '⬆';
+      } else if (keysPressed.down) {
+        lastDirection.title = 'Go Backward';
+        lastDirection.arrow = '⬇';
+      } else if (keysPressed.left) {
+        lastDirection.title = 'Go Left';
+        lastDirection.arrow = '⬅';
+      } else if (keysPressed.right) {
+        lastDirection.title = 'Go Right';
+        lastDirection.arrow = '➡';
+      }
+      
+      // Update the display with the current direction
+      title.textContent = lastDirection.title;
+      arrow.textContent = lastDirection.arrow;
+    }
+
+    // Track key press down
     document.addEventListener('keydown', (event) => {
+      // Reset all keys first
+      keysPressed.up = false;
+      keysPressed.down = false;
+      keysPressed.left = false;
+      keysPressed.right = false;
+      
       switch (event.key) {
         case 'ArrowUp':
         case 'w':
         case 'W':
-          title.textContent = 'Go Forward';
-          arrow.textContent = '⬆';
+          keysPressed.up = true;
           break;
         case 'ArrowDown':
         case 's':
         case 'S':
-          title.textContent = 'Go Backward';
-          arrow.textContent = '⬇';
+          keysPressed.down = true;
           break;
         case 'ArrowLeft':
         case 'a':
         case 'A':
-          title.textContent = 'Go Left';
-          arrow.textContent = '⬅';
+          keysPressed.left = true;
           break;
         case 'ArrowRight':
         case 'd':
         case 'D':
-          title.textContent = 'Go Right';
-          arrow.textContent = '➡';
+          keysPressed.right = true;
           break;
         case ' ': // Space key
-          title.textContent = 'Stop';
-          arrow.textContent = '■';
-          break;
-        default:
-          title.textContent = 'Invalid Key';
-          arrow.textContent = '❓';
+          lastDirection.title = 'Stop';
+          lastDirection.arrow = '■';
+          title.textContent = lastDirection.title;
+          arrow.textContent = lastDirection.arrow;
+          return; // Return early for space key
       }
+      
+      updateDisplay();
+      event.preventDefault(); // Prevent default behaviors like scrolling
     });
+
+    // For initial display
+    title.textContent = lastDirection.title;
+    arrow.textContent = lastDirection.arrow;
   </script>
 </body>
 </html>
