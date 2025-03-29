@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grocery Route Navigator</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.5s ease;
+    }
+
+    .selection-page {
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .route-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      z-index: 2;
+      transform: translateX(100%);
+    }
+
+    .page.active {
+      transform: translateX(0);
+    }
+
+    .scroll-container {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 20px;
+    }
+
+    .grocery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1rem;
+      min-width: 100%;
+      scroll-snap-align: start;
+      padding: 1rem;
+    }
+
+    .grocery-item {
+      background-color: #f8f9fa;
+      border: 2px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 200px;
+    }
+
+    .grocery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: #007bff;
+    }
+
+    .grocery-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .grocery-name {
+      font-weight: bold;
+    }
+
+    .scroll-indicator {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+    }
+
+    .dot {
+      height: 10px;
+      width: 10px;
+      background-color: #bbb;
+      border-radius: 50%;
+      margin: 0 5px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background-color: #717171;
+    }
+
+    .route-step {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #000000;
+      margin-bottom: 0.5rem;
+    }
+
+    .arrow {
+      font-size: 30vw;
+      color: #000000;
+      line-height: 1;
+      font-weight: bold;
+      text-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+    }
+
+    .fullscreen-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fullscreen-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 18px;
+      z-index: 1000;
+      display: none; /* Hide by default, show when needed */
+    }
+
+    .fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .fullscreen-overlay button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    .grocery-item.out-of-stock {
+      background-color: #f8f8f8;
+      border: 2px dashed #ccc;
+      opacity: 0.7;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .grocery-item.out-of-stock:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #ccc;
+    }
+
+    .grocery-item.out-of-stock::after {
+      content: "OUT OF STOCK";
+      position: absolute;
+      background-color: rgba(220, 53, 69, 0.85);
+      color: white;
+      padding: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      transform: rotate(-15deg);
+      top: 40%;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+
+    .grocery-item.out-of-stock img,
+    .grocery-item.out-of-stock .grocery-name {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div id="fullscreenOverlay" class="fullscreen-overlay">
+    <p>This application requires fullscreen mode</p>
+    <button onclick="requestFullscreenForced()">Enter Fullscreen</button>
+  </div>
+
+  <div class="fullscreen-message" id="fullscreenMessage">
+    For best experience, please use fullscreen mode
+    <button onclick="requestFullscreen()">Enter Fullscreen</button>
+  </div>
+
+  <button class="fullscreen-button" id="fullscreenButton" onclick="requestFullscreen()">⛶</button>
+
+  <div class="page selection-page active" id="selectionPage">
+    <div class="scroll-container" id="scrollContainer">
+      <div class="grocery-grid">
+        <div class="grocery-item" data-item="Oranges">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Orange-Fruit-Pieces.jpg" alt="Oranges" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Oranges</span>
+        </div>
+        <div class="grocery-item out-of-stock" data-item="Apples">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg" alt="Apples" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Apples</span>
+        </div>
+        <div class="grocery-item" data-item="Bananas">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" alt="Bananas" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Bananas</span>
+        </div>
+        <div class="grocery-item" data-item="Chocolates">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Chocolate_egg.jpg" alt="Chocolates" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Chocolates</span>
+        </div>
+        <div class="grocery-item" data-item="Bread">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Bread_%28PSF%29.jpg" alt="Bread" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Bread</span>
+        </div>
+        <div class="grocery-item out-of-stock" data-item="Milk">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Milk_glass.jpg" alt="Milk" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Milk</span>
+        </div>
+        <div class="grocery-item" data-item="Eggs">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Egg_in_a_shell.jpg" alt="Eggs" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Eggs</span>
+        </div>
+        <div class="grocery-item" data-item="Rice">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Rice_field.jpg" alt="Rice" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Rice</span>
+        </div>
+      </div>
+      
+      <div class="grocery-grid">
+        <div class="grocery-item" data-item="Pasta">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Spaghetti_al_Pomodoro.jpg" alt="Pasta" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Pasta</span>
+        </div>
+        <div class="grocery-item out-of-stock" data-item="Cereal">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Cornflakes_bowl.jpg" alt="Cereal" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Cereal</span>
+        </div>
+        <div class="grocery-item" data-item="Coffee">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG" alt="Coffee" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Coffee</span>
+        </div>
+        <div class="grocery-item" data-item="Yogurt">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Yoghurt.jpg" alt="Yogurt" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Yogurt</span>
+        </div>
+        <div class="grocery-item out-of-stock" data-item="Cheese">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Cheddar_cheese.jpg" alt="Cheese" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Cheese</span>
+        </div>
+        <div class="grocery-item" data-item="Vegetables">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Vegetables_in_a_basket.jpg" alt="Vegetables" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Vegetables</span>
+        </div>
+        <div class="grocery-item" data-item="Meat">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Meat.jpg" alt="Meat" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Meat</span>
+        </div>
+        <div class="grocery-item" data-item="Fish">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Fish.jpg" alt="Fish" class="grocery-img" width="100" height="100">
+          <span class="grocery-name">Fish</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="scroll-indicator" id="scrollIndicator">
+      <span class="dot active" data-index="0"></span>
+      <span class="dot" data-index="1"></span>
+    </div>
+  </div>
+  
+  <div class="page route-page" id="routePage">
+    <div class="route-step">
+      <h1 id="title"></h1>
+      <div id="arrow" class="arrow">⬆</div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced fullscreen functionality
+    function requestFullscreenForced() {
+      const docEl = document.documentElement;
+      
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen();
+      } else if (docEl.webkitRequestFullscreen) { /* Safari */
+        docEl.webkitRequestFullscreen();
+      } else if (docEl.msRequestFullscreen) { /* IE11 */
+        docEl.msRequestFullscreen();
+      } else if (docEl.mozRequestFullScreen) { /* Firefox */
+        docEl.mozRequestFullScreen();
+      }
+      
+      checkFullscreenStatus();
+    }
+    
+    function requestFullscreen() {
+      const docEl = document.documentElement;
+      
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen();
+      } else if (docEl.webkitRequestFullscreen) { /* Safari */
+        docEl.webkitRequestFullscreen();
+      } else if (docEl.msRequestFullscreen) { /* IE11 */
+        docEl.msRequestFullscreen();
+      }
+      
+      hideFullscreenButton();
+    }
+    
+    function exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+      }
+    }
+    
+    function isFullscreen() {
+      return (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+    }
+    
+    function hideFullscreenButton() {
+      document.getElementById('fullscreenButton').style.display = 'none';
+      document.getElementById('fullscreenMessage').classList.remove('show');
+    }
+    
+    function showFullscreenButton() {
+      document.getElementById('fullscreenButton').style.display = 'flex';
+      document.getElementById('fullscreenMessage').classList.add('show');
+      
+      // Auto-hide the message after 5 seconds
+      setTimeout(() => {
+        document.getElementById('fullscreenMessage').classList.remove('show');
+      }, 5000);
+    }
+    
+    function showFullscreenOverlay() {
+      document.getElementById('fullscreenOverlay').style.display = 'flex';
+    }
+    
+    function hideFullscreenOverlay() {
+      document.getElementById('fullscreenOverlay').style.display = 'none';
+    }
+    
+    // Check fullscreen state change and force overlay if not in fullscreen
+    function checkFullscreenStatus() {
+      if (isFullscreen()) {
+        hideFullscreenOverlay();
+        document.getElementById('fullscreenButton').style.display = 'none';
+      } else {
+        showFullscreenOverlay();
+        document.getElementById('fullscreenButton').style.display = 'flex';
+      }
+    }
+    
+    // Listen for fullscreen changes
+    document.addEventListener('fullscreenchange', checkFullscreenStatus);
+    document.addEventListener('webkitfullscreenchange', checkFullscreenStatus);
+    document.addEventListener('mozfullscreenchange', checkFullscreenStatus);
+    document.addEventListener('MSFullscreenChange', checkFullscreenStatus);
+    
+    // Try to request fullscreen on various events
+    window.addEventListener('load', () => {
+      // Initial fullscreen check
+      checkFullscreenStatus();
+      
+      // First attempt on page load - may be blocked by browser
+      setTimeout(() => {
+        if (!isFullscreen()) {
+          requestFullscreenForced();
+        }
+      }, 1000);
+    });
+    
+    // Try to force fullscreen on any user interaction
+    document.addEventListener('click', () => {
+      if (!isFullscreen()) {
+        requestFullscreenForced();
+      }
+    });
+    
+    // Try to re-enter fullscreen if window is focused
+    window.addEventListener('focus', () => {
+      if (!isFullscreen()) {
+        requestFullscreenForced();
+      }
+    });
+    
+    // Auto re-request fullscreen every 5 seconds if not in fullscreen mode
+    setInterval(() => {
+      if (!isFullscreen() && document.hasFocus()) {
+        requestFullscreenForced();
+      }
+    }, 5000);
+    
+    const selectionPage = document.getElementById('selectionPage');
+    const routePage = document.getElementById('routePage');
+    const scrollContainer = document.getElementById('scrollContainer');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    const title = document.getElementById('title');
+    const arrow = document.getElementById('arrow');
+    
+    let currentItem = null;
+    let isGeneratingRoute = false;
+    
+    // Initialize dot indicators
+    const dots = document.querySelectorAll('.dot');
+    
+    // Update active dot based on scroll position
+    scrollContainer.addEventListener('scroll', () => {
+      const scrollPosition = scrollContainer.scrollLeft;
+      const containerWidth = scrollContainer.offsetWidth;
+      const index = Math.round(scrollPosition / containerWidth);
+      
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    });
+    
+    // Scroll to grid when clicking on dot
+    scrollIndicator.addEventListener('click', (event) => {
+      if (event.target.classList.contains('dot')) {
+        const index = parseInt(event.target.dataset.index);
+        const containerWidth = scrollContainer.offsetWidth;
+        scrollContainer.scrollTo({
+          left: index * containerWidth,
+          behavior: 'smooth'
+        });
+      }
+    });
+    
+    // Define the possible route directions
+    const directions = {
+      forward: { title: 'Go Forward', arrow: '⬆' },
+      left: { title: 'Go Left', arrow: '⬅' },
+      right: { title: 'Go Right', arrow: '➡' },
+      forwardLeft: { title: 'Check Left', arrow: '↖' },
+      forwardRight: { title: 'Check Right', arrow: '↗' },
+      stop: { title: 'Stop', arrow: '■' }
+    };
+    
+    // Generate a random route based on constraints
+    function generateRoute() {
+      const route = [
+        directions.forward, // Step 1: Always "Go Forward"
+        Math.random() < 0.5 ? directions.left : directions.right, // Step 2: Random between Left or Right
+        // Step 3: Random between Forward, Left, or Right
+        [directions.forward, directions.left, directions.right][Math.floor(Math.random() * 3)],
+        Math.random() < 0.5 ? directions.left : directions.right, // Step 4: Random between Left or Right
+        directions.forward, // Step 5: Always "Go Forward"
+        directions.stop, // After Step 5: Always "Stop"
+        Math.random() < 0.5 ? directions.forwardLeft : directions.forwardRight // Final: Random between Check Left or Check Right
+      ];
+      
+      return route;
+    }
+    
+    // Switch between selection and route pages
+    function showPage(pageId) {
+      if (pageId === 'selection') {
+        selectionPage.classList.add('active');
+        routePage.classList.remove('active');
+      } else if (pageId === 'route') {
+        selectionPage.classList.remove('active');
+        routePage.classList.add('active');
+      }
+    }
+    
+    // Display the route step by step with intervals
+    function displayRoute(route) {
+      isGeneratingRoute = true;
+      showPage('route');
+      
+      let currentStep = 0;
+      
+      function showStep() {
+        if (currentStep < route.length) {
+          const step = route[currentStep];
+          title.textContent = step.title;
+          arrow.textContent = step.arrow;
+          
+          currentStep++;
+          if (currentStep < route.length) {
+            setTimeout(showStep, 2000); // 2 seconds interval
+          } else {
+            // Return to selection page after 10 seconds
+            setTimeout(() => {
+              isGeneratingRoute = false;
+              showPage('selection');
+            }, 10000);
+          }
+        }
+      }
+      
+      showStep();
+    }
+    
+    // Handle grocery item selection
+    scrollContainer.addEventListener('click', (event) => {
+      if (isGeneratingRoute) return;
+      
+      const item = event.target.closest('.grocery-item');
+      if (item && !item.classList.contains('out-of-stock')) {
+        const itemName = item.dataset.item;
+        currentItem = itemName;
+        
+        // Highlight selected item
+        document.querySelectorAll('.grocery-item:not(.out-of-stock)').forEach(el => {
+          el.style.backgroundColor = '#f8f9fa';
+        });
+        item.style.backgroundColor = '#d4edda';
+        
+        // Generate and display route immediately on click
+        const route = generateRoute();
+        displayRoute(route);
+      }
+    });
+  </script>
+</body>
+</html>
