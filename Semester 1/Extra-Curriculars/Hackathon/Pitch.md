@@ -14,6 +14,8 @@ Our diverse team brings together expertise in software architecture, AI, data an
 - **Vishal Saini** – AI/ML & Deployment Specialist  
   *Expertise: Python, Rust; Tools: PyTorch, TensorFlow, MLflow, AWS, Langchain, Docker | Studying AI & ML at Humber College*
 
+Our solution leverages cutting-edge technologies to create a seamless retail experience that benefits both shoppers and managers.
+
 ## Problem Statement
 Our research reveals significant challenges on both sides of the retail equation:
 
@@ -83,12 +85,37 @@ The digital transformation of retail continues to accelerate globally. Even capt
 - **Pilot Programs:** Early demos have shown improved shopping experiences and operational efficiencies.
 
 ## Timeline & Milestones
-- **Short-Term:**  
-  - Develop core functionalities: cart interface, basic dashboard, and initial AI analytics module.
-- **Mid-Term:**  
-  - Integrate hardware simulations (IPS, barcode scanners) and refine AI modules based on feedback.
-- **Long-Term:**  
-  - Pilot implementation in select retail locations, followed by iterative improvements and full-scale rollout.
+
+### Short-Term:
+- **Sprint 1:**  
+  - Develop Cart Interface using HTML and CSS to ensure a smooth User Experience.
+- **Sprint 2:**  
+  - Connect Interface with a Django or Flask backend.
+  - Implement a Database for inventory management and user information.
+- **Sprint 3:**  
+  - Deploy the system in a staging environment and test using Pytest.
+  - Focus on security testing to ensure readiness for pilot testing.
+
+### Mid-Term:
+- **Sprint 1:**  
+  - Integrate a Barcode Scanner.
+- **Sprint 2:**  
+  - Refine the AI Module based on gathered data.
+
+### Long-Term:
+#### Pre-Sprint Objectives:
+- Contact and negotiate with retailers for pilot testing.
+  - Finalize pilot testing logistics, including hardware and software setup.
+
+- **Sprint 1:**  
+  - Set up the centralized Manager Dashboard on AWS or a local server.
+- **Sprint 2:**  
+  - Implement analytics to track system usage and identify bottlenecks.
+  - Deliver updates via AWS using ECS.
+- **Sprint 3:**  
+  - **Expand to Other Locations:**  
+    - Deploy the solution across multiple retailer locations.
+    - Use a load balancer to distribute traffic across servers.
 
 ## Financial Projections
 - **Cost Savings & ROI:** Expected reduction in inventory waste and improved operational efficiency.
@@ -125,7 +152,7 @@ The digital transformation of retail continues to accelerate globally. Even capt
 - **Front-End:**  
   - Built with HTML, CSS, and JavaScript for a simple, engaging interface.
 - **Back-End Systems & Analytics:**  
-  - Utilizing Flask/Django APIs in Python along with extensive data analytics and machine learning libraries.
+  - Utilizing Flask/Django APIs in Python alongside extensive data analytics and machine learning libraries.
 - **Hardware Integration:**  
   - Leveraging affordable embedded systems (e.g., Raspberry Pi alternatives, tablet interfaces, barcode scanners) integrated with off-the-shelf components.
 - **Indoor Positioning Integration:**  
