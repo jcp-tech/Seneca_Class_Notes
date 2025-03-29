@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 12px;
+        }
+        .header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .nav ul {
+            list-style: none;
+            display: flex;
+        }
+        .nav li {
+            margin-left: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 1200px;
+        }
+        .billing-summary, .order-review {
+            background-color: white;
+            padding: 30px;
+            width: 48%;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .billing-summary div, .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background-color: #eee;
+        }
+        .order-item p {
+            margin-bottom: 8px;
+        }
+        .quantity button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .quantity input {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #ccc;
+            margin: 0 5px;
+            border-radius: 4px;
+        }
+        .pay-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .pay-button:hover {
+            background-color: #218838;
+        }
+        .discount-codes input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        textarea {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="https://placehold.co/50" alt="Logo" />
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Aisles</a></li>
+                <li><a href="#">Reviews</a></li>
+            </ul>
+        </nav>
+        <div class="profile">
+            <img src="https://placehold.co/50" alt="Profile" />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="billing-summary">
+            <h2>Billing Summary</h2>
+            <div><span>Subtotal</span><span>$3720.27</span></div>
+            <div><span>Discount</span><span>-$749.99</span></div>
+            <div><span>Warranty (Platinum) <a href="#">Remove</a></span><span>$259.99</span></div>
+            <div><span>Shipping</span><span>$0.00</span></div>
+            <div><span>Tax</span><span>$228.72</span></div>
+            <div><span><strong>Grand Total</strong></span><span><strong>$3,439.00</strong></span></div>
+            <span>Order Comment</span>
+            <textarea rows="4" placeholder="Leave a comment..."></textarea>
+            <div>
+                <input type="checkbox" id="terms" />
+                <label for="terms">I acknowledge the Privacy & Terms Policy</label>
+            </div>
+            <button class="pay-button">Pay $3,439.00</button>
+        </div>
+
+        <div class="order-review">
+            <h2>Order Review</h2>
+            <p>3 items in cart</p>
+            <div class="order-item">
+                <img src="https://placehold.co/50" alt="Product" />
+                <div>
+                    <p>Product Name</p>
+                    <div class="quantity">
+                        <button>-</button>
+                        <input type="text" value="2" />
+                        <button>+</button>
+                    </div>
+                </div>
+                <span>$245.78</span>
+                <a href="#">X</a>
+            </div>
+            <div class="discount-codes">
+                <label for="coupon">Discount Code</label>
+                <input type="text" id="coupon" placeholder="Enter your coupon code" value="XRTMAS70" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
