@@ -231,6 +231,28 @@
     .grocery-item.out-of-stock .grocery-name {
       opacity: 0.5;
     }
+
+    /* Discount styling */
+    .grocery-item.discount {
+      border: 2px solid #28a745;
+      box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+    }
+
+    .grocery-item.discount::after {
+      content: "20% OFF";
+      position: absolute;
+      background-color: #28a745;
+      color: white;
+      padding: 5px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      transform: rotate(15deg);
+      top: 15%;
+      right: -5px;
+      text-align: center;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -257,7 +279,7 @@
           <img src="https://media.gettyimages.com/id/185071735/photo/red-apple-with-droplet.jpg?s=1024x1024&amp;w=gi&amp;k=20&amp;c=pWfbyOiS7CIMU0xihsXw3S_SsASR_y6Ca9CSakFsfJg=" alt="Apples" class="grocery-img" width="100" height="100">
           <span class="grocery-name">Apples</span>
         </div>
-        <div class="grocery-item" data-item="Bananas">
+        <div class="grocery-item discount" data-item="Bananas">
           <img src="https://media.gettyimages.com/id/173242750/photo/banana-bunch.jpg?s=1024x1024&amp;w=gi&amp;k=20&amp;c=JAE_7NSmGwspdpUGTPMxqWoKRNLBippqkPiffVaMdTI=" alt="Bananas" class="grocery-img" width="100" height="100">
           <span class="grocery-name">Bananas</span>
         </div>
@@ -304,7 +326,7 @@
           <img src="https://media.gettyimages.com/id/859268416/photo/cheese-chunk-isolated-on-white-background.jpg?s=1024x1024&amp;w=gi&amp;k=20&amp;c=xY1wjWAjEbAvtWgaqmwjCgnLIGokhArYuNXiFP_D1es=" alt="Cheese" class="grocery-img" width="100" height="100">
           <span class="grocery-name">Cheese</span>
         </div>
-        <div class="grocery-item" data-item="Vegetables">
+        <div class="grocery-item discount" data-item="Vegetables">
           <img src="https://media.gettyimages.com/id/1413587187/photo/fresh-multicolored-fruits-and-vegetables-on-white-background.jpg?s=1024x1024&amp;w=gi&amp;k=20&amp;c=m7nAjKmurKNU7tMiondh4JNbd40IBX-A-KHALF8znDQ=" alt="Vegetables" class="grocery-img" width="100" height="100">
           <span class="grocery-name">Vegetables</span>
         </div>
