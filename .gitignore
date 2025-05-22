@@ -1,3 +1,4 @@
 **/.env
 **/*ignore*/
 # **/*.keras
+**/*__pycache__*/
