@@ -2,165 +2,186 @@
 
 ### 1. Project Charter
 
-* **Modifications to Initial Idea:** Expanded scope to include WhatsApp/Discord bot integration, GCP Vertex AI processing, predictive analytics, and web frontend.
-* **Problem Statement:** Manual receipt management is inefficient and lacks intelligence. Users need automated tools to track expenses, categorize spending, and gain personalized insights.
-* **Project Goal:** Build an AI-based web and chatbot-integrated system that extracts structured data from receipts and provides categorized expense tracking with predictive financial tips.
-* **In-Scope:**
+**Initial Idea:** Build an AI-based system that integrates WhatsApp/Discord bots for image upload, uses GCP Vertex AI for OCR processing, performs classification and regression modeling for financial insights, and delivers outputs via a web dashboard.
 
-  * Scanning and processing printed receipts
-  * Cloud-hosted API for pipeline management
-  * Google Vision/Vertex Document AI for extraction
-  * NLP-based categorization and visualization
-  * AI agent-based predictive insights
-  * WhatsApp/Discord bot for uploads and summaries
-  * Web dashboard for insights and future receipt uploads
-  * *Webhook-based triggers for automation and event-driven processing*
-  * *Support for multiple input formats including PDFs, scanned and unscanned images*
-* **Out-of-Scope:** Handwritten receipt recognition, mobile apps, full-scale user authentication system, Duplicate Checks, Dashboard, etc...
+**Problem Statement:** Manual receipt management is inefficient and lacks intelligence. Users need automated tools to track expenses, categorize spending, and gain personalized insights.
+
+**Project Goal:** Develop a chatbot-integrated, cloud-hosted platform that extracts structured data from receipts and provides categorized expense tracking along with predictive financial advice.
+
+**In-Scope:**
+
+* Scanning and processing printed receipts
+* Cloud-hosted API for pipeline management
+* Google Vision/Vertex Document AI for extraction
+* NLP-based categorization and visualization
+* Classification model to categorize receipt items
+* Regression model for user-specific financial predictions
+* AI agent (Langchain/Ollama) for spending insights
+* Discord bot integration
+* Support for PDFs, scanned/unscanned images
+
+**Out-of-Scope:**
+
+* Handwritten receipt recognition
+* Mobile applications
+* Full user authentication system
+* Web dashboard for summaries and insights
+* Webhook-based automation
+* Custom API Integrations for Customer who want to Integrate into their Own CRM Systems
+* WhatsApp bot integration
 
 ### 2. Data Acquisition & Initial Exploration
 
-* **Data Sources:**
+**Data Sources:**
 
-  * Dummy data from public receipt datasets
-  * Planned personal receipt uploads via bot or site
-* **Initial Data Findings:**
+* Public receipt datasets
+* User uploads via bot/web interface
 
-  * Mostly English
-  * Inconsistent formats
-  * Requires normalization and noise filtering
-* **Cleaning Plan:**
+**Initial Findings:**
 
-  * Remove noise (e.g., offers, irrelevant lines)
-  * Normalize formats and unify schema
-  * Map fields for AI training (store, items, price, tax)
-  * *Ensure consistent tagging and extraction of unique Purchase ID for each receipt*
+* Predominantly English
+* Format inconsistencies
+* Requires cleaning and schema standardization
 
-### 3. Proposed Technical Approach
+**Cleaning Plan:**
 
-* **Models/Algorithms:**
+* Remove promotional noise and irrelevant lines
+* Normalize structure and unify schemas
+* Tag store, items, prices, tax
+* Extract unique Purchase IDs
+* Label items by category for classification
+* Aggregate user-wise weekly spend for regression
 
-  * OCR: Google Vision API → Vertex Document AI (custom-trained)
-  * Categorization: BERT/spaCy for item grouping
-  * Prediction: Langchain or Ollama LLMs via AI agents
-* **Tech Stack:**
+### 3. Technical Approach
 
-  * Backend: Flask/Django (TBD), Docker, GCP/AWS/Hostinger
-  * Storage: MySQL/Firebase (TBD)
-  * Bot: Discord/WhatsApp integration with webhook triggers
-  * Visualization: Streamlit/Dash for frontend dashboard
-* **Architecture Highlights:**
+**Models/Algorithms:**
 
-  * End-to-end automation via CI/CD and cronjobs
-  * Document parsing + classification → semantic tagging
-  * Weekly insights + on-demand queries via bot
-  * *Support for user-specific API behaviors (e.g., simple acknowledgment for Discord, structured data response for business clients)*
-  * *Semantic layer for total spend per category, date-tagging, and purchase timeline alignment*
-  * *Integration of Jenkins, Git, and Kubernetes for CI/CD and scalable deployment*
+* OCR: Google Vision API → Vertex Document AI
+* Categorization: spaCy/BERT (TBD)
+* Classification: Model to categorize items (e.g., Groceries, Electronics) — *current plan is to utilize an LLM (e.g., Langchain/Ollama) to provide this classification as needed*
+* Regression: Model to predict weekly spend
+* LLM Agent: Langchain/Ollama for advice generation
+
+**Tech Stack:**
+
+* Backend: Flask/Django (TBD), Docker
+* Hosting: GCP/AWS/Hostinger (TBD)
+* Storage: MySQL/Firebase (TBD)
+* Bots: Currently only Discord
+* Visualization: Streamlit/Dash (TBD)
+
+**Architecture Highlights:**
+
+* CI/CD + cronjobs for deployment
+* OCR → classification → semantic tagging
+* Aggregated & categorized data → regression model
+* On-demand and scheduled AI responses
+* Jenkins, Git, Kubernetes for orchestration
 
 ### 4. Project Plan & Team Roles
 
-* **Image Upload & Bot Integration**
+**Image Upload & Bot Integration:**
 
-  * Aliyyah: Implement and test weekly summaries via bot
-  * Jonathan: Set up Discord bot and pipeline trigger integration
-* **Data Ingestion & Routing**
+* Aliyyah: Bot weekly summary implementation
+* Jonathan: Discord bot + pipeline trigger
 
-  * Jonathan: Design backend API for routing uploads to GCP Bucket
-  * Jonathan: Explore and document data formats and bot submission flows
-* **OCR & Document Processing**
+**Data Ingestion & Routing:**
 
-  * Aadil: Run OCR accuracy tests on dummy/bot data
-  * Jonathan: Set up Google Vision API and explore transition to Vertex Document AI
-* **Data Cleaning & Preprocessing**
+* Jonathan: API design + data format exploration
 
-  * Aadil: Normalize receipt text data and define schema
-  * Aliyyah: Remove irrelevant or redundant receipt data
-* **NLP Categorization & Semantic Structuring**
+**OCR & Processing:**
 
-  * Aadil: Select and experiment with NLP models (spaCy/BERT)
-  * Aadil: Develop initial categorization logic and category mapping
-* **AI Agent & Predictive Layer**
+* Aadil: OCR accuracy tests
+* Jonathan: Google Vision API + Vertex AI setup
 
-  * Jonathan: Integrate NLP output with AI agent (Langchain/Ollama) via API
-  * Aliyyah: Research and document LLMs for predictive analytics
-  * Aadil: Assist in LLM exploration and prototype predictive model
-  * Aliyyah: Document predictive model performance and challenges
-* **Frontend Development**
+**Data Cleaning & Preprocessing:**
 
-  * Aliyyah: Create mockups with Streamlit for dashboard insights
-  * Aadil: Research and test Dash for dashboard visualizations
-  * Jonathan: Develop login and dashboard functionality for web frontend
-* **Project Management & Collaboration**
+* Aadil: Normalize text + define schema
+* Aliyyah: Remove redundant data
 
-  * All: Use Notion for central documentation
-  * All: Track progress and assign tasks using Jira-alternative tools
-  * All: Meet weekly to review tasks and roadblocks
-  * All: Collaborate on deployment strategy (GCP vs AWS vs Hostinger)
+**NLP Categorization:**
+
+* Aadil: NLP model testing and categorization logic
+
+**Classification Model:**
+
+* TBD: Label data, train/test classification, iterate on results
+
+**Regression Model:**
+
+* TBD: Aggregate weekly data, train/test predictions, tune output
+
+**AI Agent Layer:**
+
+* Jonathan: Langchain/Ollama integration
+* Aliyyah: LLM documentation + testing
+* Aadil: LLM prototyping + support
+
+**Frontend Development:**
+
+* Aliyyah: Streamlit mockups
+* Aadil: Dash exploration
+* Jonathan: Web login/dashboard
+
+**Project Management:**
+
+* All: Use Notion + weekly syncs + deployment decisions
 
 ### 5. Risks and Mitigation
 
-* **OCR Errors:** Use of trained Vertex model, multiple test cases
-* **Bot Downtime:** Use established SDKs and modular bot design
-* **Model Generalization:** Diverse training samples, fine-tuning
-* **Cloud Cost:** GCP free tier, fallback to AWS or Hostinger as needed
-* *Webhook failures or scheduling conflicts will be addressed by redundancy and fallback routines*
+* **OCR Errors:** Use custom-trained Vertex AI models
+* **Bot Downtime:** Use SDKs + modular bot design
+* **Model Overfitting:** Diverse data + fine-tuning
+* **Cloud Costs:** Use GCP free tier, fallback to alternatives
+* **Automation Errors:** Redundancy for webhooks/cronjobs
 
 ### 6. Professionalism & Engagement
 
-* **Preparedness:**
-
-  * Weekly Notion logs & timeline using Jira alt
-  * Clear role delegation and technical exploration paths
-* **Engagement:**
-
-  * Team syncs and milestone reviews are scheduled
-  * Exploration of hosting, frameworks, and APIs in parallel
-  * *Early prototyping of Discord/WhatsApp interaction modes*
-
-### &#x20;
+* **Preparedness:** Weekly logs, clear tasks, assigned roles
+* **Engagement:** Weekly syncs, tech exploration, early bot prototyping
 
 ### 7. Process Flow (End-to-End)
 
-* **Step 1: Image Capture & Upload**
+1. **Image Capture & Upload:**
 
-  * Users take a picture or upload a receipt.
-  * Upload can occur via Discord, WhatsApp Bot, or other integrated platforms.
+   * Users upload via Discord/WhatsApp
 
-* **Step 2: API Handling & Routing**
+2. **API Routing:**
 
-  * The bot/API collects the image, user metadata, and optional custom prompts (e.g., source context).
-  * API is hosted on a cloud platform (TBD: AWS or Hostinger) and routes the image to a Google Cloud Storage Bucket.
+   * Bot/API collects image and metadata
+   * Routes to GCP bucket
 
-* **Step 3: Document AI Parsing**
+3. **Document Parsing:**
 
-  * The image is sent to a pre-trained custom GCP Vertex Document AI model.
-  * The model extracts structured data such as:
+   * GCP Vertex AI extracts structured fields (store, items, tax, ID)
 
-    1. Store information & metadata
-    2. Item names, quantities, unit amounts
-    3. Tax and total amounts
-    4. Unique Purchase ID (1 per bill)
+4. **Classification Model:**
 
-* **Step 4: Data Categorization via AI Agent**
+   * Items are categorized into types
+   * Totals per category calculated
 
-  * Structured data is forwarded to an AI agent (e.g., Langchain or Ollama).
-  * AI categorizes each item into broader categories, calculates total spend per category, tags the date of purchase, and appends the Purchase ID for linkage.
+5. **Regression Model:**
 
-* **Step 5: Storage and Summary**
+   * Predicts next week’s spend using aggregated user data
 
-  * The categorized output is stored in a database (TBD: MySQL or Firebase).
-  * Summary data is prepared for visualization or messaging.
+6. **AI Agent Response:**
 
-* **Step 6: Output Delivery**
+   * Langchain/Ollama generate advice based on predictions
 
-  * Discord/WhatsApp users receive status confirmation (e.g., "It’s processed") or a summarized insight.
-  * Company platforms receive a structured JSON response with detailed results.
+7. **Storage:**
 
-* **Step 7: Automation & Infrastructure**
+   * Final structured data saved to MySQL/Firebase
 
-  * CI/CD workflows, webhooks, and cronjobs manage deployments and scheduled insight deliveries.
-  * Tools include Docker, Git, Jenkins, and Kubernetes for containerization and orchestration.
+8. **Output Delivery:**
+
+   * Summary to users (bot) or JSON to business clients
+
+9. **Automation & CI/CD:**
+
+   * Cronjobs/webhooks handle scheduling
+   * Deployment via Jenkins + Docker + Kubernetes
+
+### Mermaid Diagram
 
 ![Mermaid Diagram](https://kroki.io/mermaid/svg/eNpVU01zm0AMvfdX6AfYBzvJJYfOYDA2jjtxQ1IfdnxYsAwU2GX2o4mb9L9Xu0um1BdG0tOTnt760snXsubKwHPyBegXsReNCl6GTvKzhicssRkMZD2v8ATz-VdYvWdisAbimguB3R_ftnKlj6TRpVTnD4gXLEdxBiMhOmTw2pgaPG8mLhI4VQ5K9oM5TZqPNTc6GgbXPUmn1liFcMSCmg2qCy_RQzwmXvidEubGzCHtuG5BKkh-clFJymylNngGKSDupD3fQ3TMZ7CJDzMHc9VGVKjCIoknW7OgPoh2GggOK1u2OC689riUkYgStQ76HOgHKoNvkMjS9igMRNkp7Jn6jg1bvxnFS7dRwg2_h9xIEueuMoPMYK9n8CwN7-h7sIqc0VRNwtSN59iyKIOocuxz2JNKAjXCiXnsOt7zgN16bMZiOohuLleIucFKqgaJmUa7j7Mht33PVfMbx7Hjuplv373nkpag2nXA4PNu6rMb-s-1hwV7QvJKkChurPZVxLa7jlOupwlFTPZzcQ2gAg5S0XgiWX6SpLbriEnZ0vkf7vXfdnsWjkfiXa1wp5rDt2v-fe9Y00ahy4092haV4kMNCf56HDTJlZ32FW_8gpFn7ec78Kkl2zRmEt-wHYq2EXqSu2UPtkAlkA46Sd-xWNGL28lC-yuTwlrKdoTQHyPstA9vdzENltPgZhrcToO7v0SgF40)
 
