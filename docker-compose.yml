@@ -1,36 +1,15 @@
-version: "3.9"
-
 services:
   ros-melodic:
     build:
-      context: ./ros-melodic
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ros.Dockerfile
     container_name: ros-melodic
     volumes:
-      - ./catkin_ws:/root/catkin_ws
+      - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
     network_mode: host
-    stdin_open: true
-    tty: true
-
-  ai-stack:
-    image: nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
-    container_name: ai-stack
-    command: bash
-    volumes:
-      - ./projects:/workspace/projects
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: ["gpu"]
-    runtime: nvidia
     stdin_open: true
     tty: true
