@@ -16,7 +16,7 @@ services:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
     network_mode: host
-    # devices:
-    #   - /dev/dri:/dev/dri
+    devices:
+      - /dev/dri:/dev/dri
     stdin_open: true
     tty: true

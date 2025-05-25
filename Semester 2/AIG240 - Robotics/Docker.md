@@ -1,6 +1,6 @@
 # 🐳 ROS Melodic Docker Setup for Seneca\_Class\_Notes
 
-This setup builds a GPU-enabled development environment for ROS Melodic, accessible via Docker.
+This setup builds a GPU- or CPU-enabled development environment for ROS Melodic using Docker.
 
 ---
 
@@ -13,85 +13,106 @@ git clone https://github.com/jcp-tech/Seneca_Class_Notes.git
 cd Seneca_Class_Notes
 ```
 
-### 2. Build the Docker Image
+---
 
-Run this from inside the cloned repo:
+## 🏗️ Choose the Docker Compose Setup
+
+### For GPU (NVIDIA GPU Support Required)
 
 ```bash
-sudo docker compose build --no-cache
+docker compose -f docker-compose.gpu.yml up --build
 ```
 
-### 🖼️ GUI Support for ROS (e.g., `turtlesim`)
+Ensure that:
 
-If you're planning to run ROS GUI tools (like `rqt` or `turtlesim`), ensure that the `DISPLAY` variable is set **before launching Docker**.
+* You have the latest **NVIDIA GPU drivers** installed
+* The **NVIDIA Container Toolkit** is installed and configured
 
-#### 🧭 For Linux/X11:
+The GPU compose file includes:
+
+```yaml
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+```
+
+### For CPU-only (Integrated Graphics / No GPU)
+
+```bash
+docker compose -f docker-compose.cpu.yml up --build
+```
+
+This setup uses:
+
+```yaml
+    devices:
+      - /dev/dri:/dev/dri
+```
+
+To provide access to direct rendering on CPU systems (e.g., Intel integrated graphics).
+
+---
+
+## 🖼️ GUI Support for ROS (e.g., `turtlesim`)
+
+### On Linux:
 
 ```bash
 export DISPLAY=:0
+xhost +local:root
 ```
 
-Then:
+Then run your Docker container as above.
 
-```bash
-DISPLAY=:0 docker compose up
-```
+### On Windows 11 + WSLg:
 
-#### 🪟 On Windows 11 using WSLg:
+GUI should work automatically (no DISPLAY config needed).
 
-GUI apps should work automatically — no need to set DISPLAY manually.
+### To test GUI:
 
-#### 🧪 To test:
-
-Inside the container, run:
+Once inside the container:
 
 ```bash
 rosrun turtlesim turtlesim_node
 ```
 
-> ✅ A window should appear with the turtle GUI.
-
----
-
-### 3. Run the Docker Container
-
-```bash
-./ros_docker_run.sh
-```
-
-Or, run the script directly:
-
-```bash
-./scripts/auto_attach_docker.sh
-```
-
-This will auto-start the container (if needed) and attach to it.
+> 🐢 A window should appear with the turtle simulator.
 
 ---
 
 ## 🧾 Additional Notes
 
-* **User:** The Docker container runs under user `jetauto` for permission consistency.
+* **User:** The Docker container runs as user `jetauto` for permissions compatibility.
 * **Volumes:** The entire repo is mounted at `/workspace` inside the container.
-* **Environment:** Python 3.12 and base ML libraries (TensorFlow, PyTorch, etc.) can be installed inside or outside the container depending on your workflow.
+* **Python Environment:** Python 3.12 is preinstalled and can be configured with packages inside the container.
 
 ---
 
 ## 🛠️ Helpful Commands
 
-### To Rebuild the Container:
+### Rebuild the Container (force new build):
 
 ```bash
-sudo docker compose build --no-cache
+docker compose -f docker-compose.gpu.yml build --no-cache
 ```
 
-### To Stop and Remove Container:
+Or for CPU:
+
+```bash
+docker compose -f docker-compose.cpu.yml build --no-cache
+```
+
+### Stop and Remove Container:
 
 ```bash
 docker stop ros-melodic && docker rm ros-melodic
 ```
 
-### To Enter the Container Manually:
+### Enter the Container:
 
 ```bash
 docker exec -it ros-melodic bash
@@ -99,4 +120,15 @@ docker exec -it ros-melodic bash
 
 ---
 
-For any additional setup or to install missing packages inside the container, edit `ros.Dockerfile` or run commands after `docker exec`.
+## ❌ Deprecated Scripts
+
+If you previously used the scripts:
+
+* `scripts/auto_attach_docker.sh`
+* `scripts/setup_conda_envs.sh`
+
+These are no longer needed. You may remove them and any symlinks or aliases like `ros_docker_run.sh`.
+
+---
+
+✅ You now have a full Docker-based ROS Melodic setup with optional GPU or CPU support!
