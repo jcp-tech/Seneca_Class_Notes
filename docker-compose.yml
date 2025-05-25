@@ -1,0 +1,25 @@
+services:
+  ros:
+    build:
+      context: .
+      dockerfile: ros.Dockerfile
+    image: ros-melodic-dev
+    container_name: ros-melodic-container
+    user: "1000:1000"
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - ./:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri  # iGPU support
+    devices:
+      - /dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]  # If available, uses NVIDIA GPU
+    runtime: nvidia  # Fallback-safe; ignored if NVIDIA runtime not present
+    stdin_open: true
+    tty: true
