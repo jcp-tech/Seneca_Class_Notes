@@ -118,17 +118,4 @@ docker stop ros-melodic && docker rm ros-melodic
 docker exec -it ros-melodic bash
 ```
 
----
-
-## ❌ Deprecated Scripts
-
-If you previously used the scripts:
-
-* `scripts/auto_attach_docker.sh`
-* `scripts/setup_conda_envs.sh`
-
-These are no longer needed. You may remove them and any symlinks or aliases like `ros_docker_run.sh`.
-
----
-
 ✅ You now have a full Docker-based ROS Melodic setup with optional GPU or CPU support!
