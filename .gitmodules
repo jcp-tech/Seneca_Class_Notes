@@ -1,6 +1,7 @@
 [submodule "PYTHON_NOTES"]
 	path = PYTHON_NOTES
 	url = https://github.com/jcp-tech/Class-Notes.git
-[submodule "Semester 2/AIG200 - Capstone Project/Code"]
+
+[submodule "SPENDIFY"]
 	path = Semester 2/AIG200 - Capstone Project/Code
 	url = https://github.com/jcp-tech/Spendify.git
