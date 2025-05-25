@@ -38,9 +38,8 @@ ARG USER_GID=1000
 
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && usermod -aG sudo $USERNAME \
+    && usermod -aG sudo $USERNAME
 
 USER $USERNAME
 WORKDIR /workspace
-
 CMD ["bash"]
