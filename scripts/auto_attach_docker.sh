@@ -2,6 +2,9 @@
 
 CONTAINER_NAME="ros-melodic"
 
+# Allow GUI access
+xhost +local:root
+
 if docker ps --format '{{.Names}}' | grep -q "^$CONTAINER_NAME$"; then
   echo "✅ Attaching to running container: $CONTAINER_NAME"
   docker exec -it "$CONTAINER_NAME" bash
