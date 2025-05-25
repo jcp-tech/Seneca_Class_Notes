@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ros.Dockerfile
     image: ros-melodic-dev
-    container_name: ros-melodic-container
+    container_name: ros-melodic-container-cpu
     user: "1000:1000"
     environment:
       - DISPLAY=${DISPLAY}
@@ -15,11 +15,5 @@ services:
       - /dev/dri:/dev/dri  # iGPU support
     devices:
       - /dev/dri
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]  # If available, uses NVIDIA GPU
-    runtime: nvidia  # Fallback-safe; ignored if NVIDIA runtime not present
     stdin_open: true
     tty: true

@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ros.Dockerfile
     image: ros-melodic-dev
-    container_name: ros-melodic-container
+    container_name: ros-melodic-container-cpu
     user: "1000:1000"
     environment:
       - DISPLAY=${DISPLAY}
