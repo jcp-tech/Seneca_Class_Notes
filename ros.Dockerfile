@@ -39,7 +39,6 @@ ARG USER_GID=1000
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && usermod -aG sudo $USERNAME \
-    && chown -R $USERNAME:$USERNAME /workspace
 
 USER $USERNAME
 WORKDIR /workspace
