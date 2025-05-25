@@ -1,33 +1,26 @@
 FROM ubuntu:18.04
 
-# Avoid prompts during build
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Create user jetauto with UID and GID 1000
+# Create user
 RUN apt-get update && \
-    apt-get install -y sudo && \
+    apt-get install -y sudo curl gnupg2 lsb-release && \
     useradd -m -u 1000 -s /bin/bash jetauto && \
     echo "jetauto ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Install ROS Melodic and tools
+# Add ROS sources and key
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | \
+    gpg --dearmor -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu bionic main" \
+    > /etc/apt/sources.list.d/ros-latest.list
+
+# Install ROS Melodic Desktop + turtlesim
 RUN apt-get update && \
-    apt-get install -y gnupg2 curl && \
-    curl -sSL http://packages.ros.org/ros.key | apt-key add - && \
-    echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list && \
-    apt-get update && \
-    apt-get install -y ros-melodic-desktop-full \
-    build-essential git wget cmake x11-apps && \
-    rosdep init && rosdep update && \
+    apt-get install -y ros-melodic-desktop-full x11-apps && \
     echo "source /opt/ros/melodic/setup.bash" >> /etc/skel/.bashrc
 
-# Install ROS dependencies for building packages
-RUN apt-get install -y python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
-
-# Switch to user jetauto
 USER jetauto
-WORKDIR /workspace
-
-# Source ROS in bashrc
+WORKDIR /home/jetauto
 RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
 CMD ["bash"]
