@@ -1,0 +1,26 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+seaborn
+scipy
+python-dotenv
+torch
+torchvision
+torchaudio --index-url https://download.pytorch.org/whl/cu118
+tensorflow
+opencv-python
+cmake
+dlib
+jupyter
+discord.py
+db-sqlite3
+mysql-connector-python
+statsmodels
+kagglehub
+ucimlrepo
+xgboost
+google-cloud-aiplatform
+transformers
+tpot
+xlrd
