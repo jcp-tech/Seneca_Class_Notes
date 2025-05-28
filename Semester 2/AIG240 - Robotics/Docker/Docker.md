@@ -46,9 +46,9 @@ docker compose up -d
 
 | Terminal       | Command                                                                                  |
 | -------------- | ---------------------------------------------------------------------------------------- |
-| 🖥️ Terminal 1 | `docker exec -it ros-melodic-container-cpu bash`<br>`roscore`                            |
-| 🐢 Terminal 2  | `docker exec -it ros-melodic-container-cpu bash`<br>`rosrun turtlesim turtlesim_node`    |
-| 🎮 Terminal 3  | `docker exec -it ros-melodic-container-cpu bash`<br>`rosrun turtlesim turtle_teleop_key` |
+| 🖥️ Terminal 1 | `docker exec -it ros-melodic-container-gpu bash`<br>`roscore`                            |
+| 🐢 Terminal 2  | `docker exec -it ros-melodic-container-gpu bash`<br>`rosrun turtlesim turtlesim_node`    |
+| 🎮 Terminal 3  | `docker exec -it ros-melodic-container-gpu bash`<br>`rosrun turtlesim turtle_teleop_key` |
 
 ## 🐢 Test Additional GUI Apps
 
