@@ -3,4 +3,5 @@
 # **/*.keras
 **/*__pycache__*/
 **/Peer Review - Milestone*.docx
-# Seneca/Semester 2/AIG200 - Capstone Project/Code
+# /Semester 2/AIG200 - Capstone Project/Code
+/Semester 2/AIG220 - Deep Learning/Lab 1/data
