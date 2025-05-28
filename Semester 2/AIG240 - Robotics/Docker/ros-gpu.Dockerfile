@@ -1,22 +1,18 @@
-FROM ubuntu:18.04
+FROM nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Create user
-RUN apt-get update && \
-    apt-get install -y sudo curl gnupg2 lsb-release && \
+RUN apt-get update && apt-get install -y \
+    sudo curl gnupg2 lsb-release x11-apps && \
     useradd -m -u 1000 -s /bin/bash jetauto && \
     echo "jetauto ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Add ROS sources and key
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | \
     gpg --dearmor -o /usr/share/keyrings/ros-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu bionic main" \
-    > /etc/apt/sources.list.d/ros-latest.list
+    echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
 
-# Install ROS Melodic Desktop + turtlesim
 RUN apt-get update && \
-    apt-get install -y ros-melodic-desktop-full x11-apps && \
+    apt-get install -y ros-melodic-desktop-full && \
     echo "source /opt/ros/melodic/setup.bash" >> /etc/skel/.bashrc
 
 USER jetauto

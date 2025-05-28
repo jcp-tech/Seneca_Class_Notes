@@ -1,0 +1,35 @@
+services:
+  ros-gpu:
+    build:
+      context: .
+      dockerfile: ros-gpu.Dockerfile
+    image: ros-melodic-dev-gpu
+    container_name: ros-melodic-container-gpu
+    runtime: nvidia
+    environment:
+      - DISPLAY=:0
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - ./:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    stdin_open: true
+    tty: true
+    privileged: true
+
+  ros-cpu:
+    build:
+      context: .
+      dockerfile: ros-cpu.Dockerfile
+    image: ros-melodic-dev-cpu
+    container_name: ros-melodic-container-cpu
+    environment:
+      - DISPLAY=:0
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - ./:/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    stdin_open: true
+    tty: true
+    privileged: true
