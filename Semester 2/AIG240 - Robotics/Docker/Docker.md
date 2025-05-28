@@ -14,9 +14,13 @@ Before using Docker for ROS and TurtleSim, ensure the following are set up **on 
   ```
 * For GPU usage:
 
-  * Latest NVIDIA drivers installed
+  * Latest NVIDIA drivers installed (confirmed via `nvidia-smi`)
   * `nvidia-docker2` and `nvidia-container-toolkit` installed
-  * Verify with: `docker run --gpus all nvidia/cuda:11.0-base nvidia-smi`
+  * Confirm GPU access:
+
+    ```bash
+    docker run --gpus all nvidia/cuda:11.8.0-base-ubuntu20.04 nvidia-smi
+    ```
 
 ## 🧹 Clean Existing Docker Containers & Images
 
@@ -60,7 +64,24 @@ xeyes
 * **DISPLAY Errors**: Ensure you're not SSHing with `-X`; use the native terminal
 * **No GUI on Ubuntu screen**: Run `export DISPLAY=:0` in container if not inherited
 * **Permission Denied**: On Ubuntu, run: `xhost +SI:localuser:jetauto`
-* **NVIDIA Errors**: Ensure `nvidia-container-toolkit` is installed, and container uses `runtime: nvidia`
+* **NVIDIA Errors**: Ensure `nvidia-container-toolkit` is installed and test with:
+
+  ```bash
+  docker run --gpus all nvidia/cuda:11.8.0-base-ubuntu20.04 nvidia-smi
+  ```
+
+## 📦 Recommended `docker-compose.yml` GPU Section
+
+```yaml
+services:
+  ros-gpu:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+```
 
 ## 🧾 Verified ROS Setup Includes:
 
@@ -71,7 +92,4 @@ xeyes
 * `ros-melodic-rqt` and `rqt-common-plugins`
 * ROS source in `.bashrc`
 * GUI forwarding enabled for physical Ubuntu display
-
 ---
-
-✅ This setup **fully satisfies the Lab 1 PDF** requirements for ROS + TurtleSim on both CPU and GPU containers.

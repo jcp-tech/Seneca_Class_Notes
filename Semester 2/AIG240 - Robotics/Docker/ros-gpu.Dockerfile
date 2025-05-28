@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
+FROM nvidia/cuda:11.8.0-base-ubuntu18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -13,7 +13,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | \
     gpg --dearmor -o /usr/share/keyrings/ros-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
 
-# Install ROS and tools
+# Install ROS and build tools
 RUN apt-get update && apt-get install -y \
     ros-melodic-desktop-full \
     python-rosdep python-rosinstall python-rosinstall-generator python-wstool \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 
-# Setup bashrc
+# Final setup
 USER jetauto
 WORKDIR /home/jetauto
 RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
