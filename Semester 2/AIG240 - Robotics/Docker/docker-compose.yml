@@ -11,6 +11,7 @@ services:
     volumes:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/jetauto:/mnt/host
     devices:
       - /dev/dri
     stdin_open: true
@@ -31,6 +32,7 @@ services:
     volumes:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/jetauto:/mnt/host
     devices:
       - /dev/dri
     stdin_open: true
