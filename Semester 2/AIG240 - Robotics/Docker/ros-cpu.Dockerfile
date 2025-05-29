@@ -2,14 +2,6 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Python packages
-RUN apt update && apt install -y python-pip && \
-    pip install pynput && \
-    rm -rf /var/lib/apt/lists/*
-
-# Auto-source catkin workspace on shell start # COMMENT IF ERROR
-RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester\\ 2/AIG240\\ -\\ Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /root/.bashrc
-
 # Create user
 RUN apt-get update && apt-get install -y \
     sudo curl gnupg2 lsb-release x11-apps vim net-tools && \
@@ -34,6 +26,14 @@ RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 # Setup environment
 USER jetauto
 WORKDIR /home/jetauto
-RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+
+# Install Python packages
+RUN apt update && apt install -y python-pip && \
+    pip install pynput && \
+    rm -rf /var/lib/apt/lists/*
+
+# Auto-source catkin workspace on shell start # COMMENT IF ERROR
+RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester\\ 2/AIG240\\ -\\ Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /root/.bashrc
+# RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
 CMD ["bash"]
