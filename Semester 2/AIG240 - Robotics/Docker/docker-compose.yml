@@ -12,6 +12,7 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /home/jetauto:/mnt/host
+    working_dir: /mnt/host
     devices:
       - /dev/dri
     stdin_open: true
@@ -33,6 +34,7 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /home/jetauto:/mnt/host
+    working_dir: /mnt/host
     devices:
       - /dev/dri
     stdin_open: true
