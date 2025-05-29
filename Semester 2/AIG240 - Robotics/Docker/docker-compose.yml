@@ -15,6 +15,7 @@ services:
     working_dir: /mnt/host
     devices:
       - /dev/dri
+      - /dev/input:/dev/input
     stdin_open: true
     tty: true
     privileged: true
@@ -37,6 +38,7 @@ services:
     working_dir: /mnt/host
     devices:
       - /dev/dri
+      - /dev/input:/dev/input
     stdin_open: true
     tty: true
     privileged: true

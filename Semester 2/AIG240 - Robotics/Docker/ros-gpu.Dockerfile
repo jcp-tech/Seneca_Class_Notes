@@ -2,6 +2,14 @@ FROM nvidia/cuda:11.8.0-base-ubuntu18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install Python packages
+RUN apt update && apt install -y python-pip && \
+    pip install pynput && \
+    rm -rf /var/lib/apt/lists/*
+
+# Auto-source catkin workspace on shell start # COMMENT IF ERROR
+RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester\\ 2/AIG240\\ -\\ Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /root/.bashrc
+
 # Create user
 RUN apt-get update && apt-get install -y \
     sudo curl gnupg2 lsb-release x11-apps vim net-tools && \
