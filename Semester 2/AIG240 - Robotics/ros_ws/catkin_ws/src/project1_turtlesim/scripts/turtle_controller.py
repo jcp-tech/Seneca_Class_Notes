@@ -3,22 +3,44 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-import sys
-import tty
-import termios
+from pynput import keyboard
 
-def get_key():
-    """Read a single keypress from stdin."""
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
+pressed_keys = set()
+
+# Define motion combinations
+def calculate_twist():
+    twist = Twist()
+
+    if 'w' in pressed_keys:
+        twist.linear.x = 2.0
+    elif 's' in pressed_keys:
+        twist.linear.x = -2.0
+
+    if 'a' in pressed_keys:
+        twist.angular.z = 2.0
+    elif 'd' in pressed_keys:
+        twist.angular.z = -2.0
+
+    return twist
+
+def on_press(key):
     try:
-        tty.setraw(fd)
-        key = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return key
+        k = key.char.lower()
+        if k in ['w', 'a', 's', 'd']:
+            pressed_keys.add(k)
+    except AttributeError:
+        pass
+
+def on_release(key):
+    try:
+        k = key.char.lower()
+        if k in pressed_keys:
+            pressed_keys.remove(k)
+    except AttributeError:
+        pass
 
 def main():
+    import sys
     if len(sys.argv) < 2:
         print("Usage: rosrun project1_turtlesim turtle_controller.py <turtle_name>")
         return
@@ -26,40 +48,17 @@ def main():
     turtle_name = sys.argv[1]
     topic = '/' + turtle_name + '/cmd_vel'
 
-    rospy.init_node('turtle_controller')
+    rospy.init_node('turtle_controller_v2')
     pub = rospy.Publisher(topic, Twist, queue_size=10)
+    rate = rospy.Rate(10)
 
-    print("Control the turtle using keys: w/a/s/d/q/e/z/c - press Ctrl+C to quit")
+    print("Multi-key controller active. Use W/A/S/D. Ctrl+C to quit.")
 
-    rate = rospy.Rate(10)  # 10 Hz
+    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+    listener.start()
+
     while not rospy.is_shutdown():
-        key = get_key()
-        twist = Twist()
-
-        if key == 'w':
-            twist.linear.x = 2.0
-        elif key == 's':
-            twist.linear.x = -2.0
-        elif key == 'a':
-            twist.angular.z = 2.0
-        elif key == 'd':
-            twist.angular.z = -2.0
-        elif key == 'q':
-            twist.linear.x = 2.0
-            twist.angular.z = 2.0
-        elif key == 'e':
-            twist.linear.x = 2.0
-            twist.angular.z = -2.0
-        elif key == 'z':
-            twist.linear.x = -2.0
-            twist.angular.z = 2.0
-        elif key == 'c':
-            twist.linear.x = -2.0
-            twist.angular.z = -2.0
-        else:
-            twist.linear.x = 0.0
-            twist.angular.z = 0.0
-
+        twist = calculate_twist()
         pub.publish(twist)
         rate.sleep()
 
