@@ -2,9 +2,9 @@ FROM nvidia/cuda:11.8.0-base-ubuntu18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Create user
+# Create user and install tools
 RUN apt-get update && apt-get install -y \
-    sudo curl gnupg2 lsb-release x11-apps vim net-tools && \
+    sudo curl gnupg2 lsb-release x11-apps vim net-tools python-pip && \
     useradd -m -u 1000 -s /bin/bash jetauto && \
     echo "jetauto ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -18,22 +18,20 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-desktop-full \
     python-rosdep python-rosinstall python-rosinstall-generator python-wstool \
     ros-melodic-turtlesim ros-melodic-rqt ros-melodic-rqt-common-plugins \
-    gazebo9 libgazebo9-dev
+    gazebo9 libgazebo9-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 
-# Setup environment
+# Switch to user
 USER jetauto
 WORKDIR /home/jetauto
 
 # Install Python packages
-RUN apt update && apt install -y python-pip && \
-    pip install pynput && \
-    rm -rf /var/lib/apt/lists/*
+RUN pip install --user pynput
 
-# Auto-source catkin workspace on shell start # COMMENT IF ERROR
-RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester\\ 2/AIG240\\ -\\ Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /root/.bashrc
-# RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+# Auto-source catkin workspace
+RUN echo 'source "/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash"' >> /home/jetauto/.bashrc
 
 CMD ["bash"]
