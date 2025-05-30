@@ -6,6 +6,7 @@ from geometry_msgs.msg import Twist
 from pynput import keyboard # pip install pynput==1.6.3
 
 pressed_keys = set()
+listener = None  # Global so we can stop it later
 
 def on_press(key):
     try:
@@ -21,6 +22,8 @@ def on_release(key):
 
 def main():
     import sys
+    global listener
+
     if len(sys.argv) < 2:
         print("Usage: rosrun project1_turtlesim turtle_controller.py <turtle_name>")
         return
@@ -37,8 +40,9 @@ def main():
     listener.start()
 
     rate = rospy.Rate(10)
-    while not rospy.is_shutdown():
-        twist = Twist()
+    try:
+        while not rospy.is_shutdown():
+            twist = Twist()
 
         if ('w' in pressed_keys and 'd' in pressed_keys) or "e" in pressed_keys:
             twist.linear.x = 2.0
@@ -64,10 +68,15 @@ def main():
             twist.linear.x = 0.0
             twist.angular.z = 0.0
 
-        pub.publish(twist)
-        rate.sleep()
+            pub.publish(twist)
+            rate.sleep()
+    except KeyboardInterrupt:
+        print("\nShutting down turtle controller...")
+        rospy.signal_shutdown("User interrupted with Ctrl+C")
 
-    listener.stop()
+    finally:
+        if listener:
+            listener.stop()
 
 if __name__ == '__main__':
     main()
