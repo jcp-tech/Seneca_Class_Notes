@@ -6,11 +6,10 @@ from geometry_msgs.msg import Twist
 from pynput import keyboard
 
 pressed_keys = set()
+listener = None  # So we can stop it later
 
-# Define motion combinations
 def calculate_twist():
     twist = Twist()
-
     if 'w' in pressed_keys:
         twist.linear.x = 2.0
     elif 's' in pressed_keys:
@@ -41,6 +40,8 @@ def on_release(key):
 
 def main():
     import sys
+    global listener
+
     if len(sys.argv) < 2:
         print("Usage: rosrun project1_turtlesim turtle_controller.py <turtle_name>")
         return
@@ -48,7 +49,7 @@ def main():
     turtle_name = sys.argv[1]
     topic = '/' + turtle_name + '/cmd_vel'
 
-    rospy.init_node('turtle_controller_v2')
+    rospy.init_node('turtle_controller_v2', anonymous=True)
     pub = rospy.Publisher(topic, Twist, queue_size=10)
     rate = rospy.Rate(10)
 
@@ -57,10 +58,17 @@ def main():
     listener = keyboard.Listener(on_press=on_press, on_release=on_release)
     listener.start()
 
-    while not rospy.is_shutdown():
-        twist = calculate_twist()
-        pub.publish(twist)
-        rate.sleep()
+    try:
+        while not rospy.is_shutdown():
+            twist = calculate_twist()
+            pub.publish(twist)
+            rate.sleep()
+    except rospy.ROSInterruptException:
+        pass
+    finally:
+        print("\nShutting down controller...")
+        if listener:
+            listener.stop()
 
 if __name__ == '__main__':
     main()
