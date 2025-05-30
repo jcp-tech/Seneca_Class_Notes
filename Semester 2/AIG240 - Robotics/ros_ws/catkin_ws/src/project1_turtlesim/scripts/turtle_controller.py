@@ -2,63 +2,66 @@
 # -*- coding: utf-8 -*-
 
 import rospy
-import sys, select, termios, tty
 from geometry_msgs.msg import Twist
-
-settings = termios.tcgetattr(sys.stdin)
+import sys
+import tty
+import termios
 
 def get_key():
-    tty.setraw(sys.stdin.fileno())
-    select_ready, _, _ = select.select([sys.stdin], [], [], 0.1)
-    if select_ready:
+    """Read a single keypress from stdin."""
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
         key = sys.stdin.read(1)
-    else:
-        key = ''
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return key
 
 def main():
-    pub = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
-    rospy.init_node('turtle_keyboard_controller')
-    move_cmd = Twist()
+    if len(sys.argv) < 2:
+        print("Usage: rosrun project1_turtlesim turtle_controller.py <turtle_name>")
+        return
 
-    instructions = """
-Control the turtle with:
-  w: forward
-  s: backward
-  a: turn left
-  d: turn right
-  x: stop
-  q: quit
-"""
-    print(instructions)
+    turtle_name = sys.argv[1]
+    topic = '/' + turtle_name + '/cmd_vel'
 
+    rospy.init_node('turtle_controller')
+    pub = rospy.Publisher(topic, Twist, queue_size=10)
+
+    print("Control the turtle using keys: w/a/s/d/q/e/z/c — press Ctrl+C to quit")
+
+    rate = rospy.Rate(10)  # 10 Hz
     while not rospy.is_shutdown():
         key = get_key()
-        if key == 'w':
-            move_cmd.linear.x = 2.0
-            move_cmd.angular.z = 0.0
-        elif key == 's':
-            move_cmd.linear.x = -2.0
-            move_cmd.angular.z = 0.0
-        elif key == 'a':
-            move_cmd.linear.x = 0.0
-            move_cmd.angular.z = 2.0
-        elif key == 'd':
-            move_cmd.linear.x = 0.0
-            move_cmd.angular.z = -2.0
-        elif key == 'x':
-            move_cmd.linear.x = 0.0
-            move_cmd.angular.z = 0.0
-        elif key == 'q':
-            break
-        else:
-            continue
+        twist = Twist()
 
-        pub.publish(move_cmd)
+        if key == 'w':
+            twist.linear.x = 2.0
+        elif key == 's':
+            twist.linear.x = -2.0
+        elif key == 'a':
+            twist.angular.z = 2.0
+        elif key == 'd':
+            twist.angular.z = -2.0
+        elif key == 'q':
+            twist.linear.x = 2.0
+            twist.angular.z = 2.0
+        elif key == 'e':
+            twist.linear.x = 2.0
+            twist.angular.z = -2.0
+        elif key == 'z':
+            twist.linear.x = -2.0
+            twist.angular.z = 2.0
+        elif key == 'c':
+            twist.linear.x = -2.0
+            twist.angular.z = -2.0
+        else:
+            twist.linear.x = 0.0
+            twist.angular.z = 0.0
+
+        pub.publish(twist)
+        rate.sleep()
 
 if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException:
-        pass
+    main()
