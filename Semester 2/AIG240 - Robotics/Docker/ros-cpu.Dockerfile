@@ -28,8 +28,8 @@ RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 USER jetauto
 WORKDIR /home/jetauto
 
-# Install Python packages
-RUN pip install --user pynput
+# # Install Python packages
+# RUN pip install --user pynput
 
 # Auto-source catkin workspace
 RUN echo 'source "/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash"' >> /home/jetauto/.bashrc
