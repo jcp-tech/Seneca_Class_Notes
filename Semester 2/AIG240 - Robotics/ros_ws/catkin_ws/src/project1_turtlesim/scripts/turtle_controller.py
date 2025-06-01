@@ -59,7 +59,11 @@ def main():
             pressed_keys = get_key()
             twist = Twist()
 
-            if 'e' in pressed_keys: # or ('w' in pressed_keys and 'd' in pressed_keys):
+            if 'x' in pressed_keys: # Exit command
+                # print("Exiting...")
+                # break
+                rospy.signal_shutdown("User interrupted with 'x' key")
+            elif 'e' in pressed_keys: # or ('w' in pressed_keys and 'd' in pressed_keys):
                 twist.linear.x = 2.0
                 twist.angular.z = -2.0
             elif 'q' in pressed_keys: # or ('w' in pressed_keys and 'a' in pressed_keys):
