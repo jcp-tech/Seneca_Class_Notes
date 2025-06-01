@@ -1,10 +1,10 @@
 services:
-  ros-cpu:
+  ros:
     build:
       context: .
-      dockerfile: ros-cpu.Dockerfile
-    image: ros-melodic-dev-cpu
-    container_name: ros-melodic-container-cpu
+      dockerfile: ros.Dockerfile
+    image: ros-melodic-dev
+    container_name: ros-melodic-container
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
@@ -19,31 +19,3 @@ services:
     stdin_open: true
     tty: true
     privileged: true
-
-  # ros-gpu:
-  #   build:
-  #     context: .
-  #     dockerfile: ros-gpu.Dockerfile
-  #   image: ros-melodic-dev-gpu
-  #   container_name: ros-melodic-container-gpu
-  #   environment:
-  #     - DISPLAY=:0
-  #     - QT_X11_NO_MITSHM=1
-  #     - NVIDIA_VISIBLE_DEVICES=all
-  #     - NVIDIA_DRIVER_CAPABILITIES=all
-  #   volumes:
-  #     - ./:/workspace
-  #     - /tmp/.X11-unix:/tmp/.X11-unix
-  #     - /home/jetauto:/mnt/host
-  #   working_dir: /mnt/host
-  #   devices:
-  #     - /dev/dri
-  #     - /dev/input:/dev/input
-  #   stdin_open: true
-  #   tty: true
-  #   privileged: true
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - capabilities: [gpu]
