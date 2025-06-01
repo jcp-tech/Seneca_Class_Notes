@@ -72,13 +72,13 @@ def main():
             elif 'c' in pressed_keys or ('s' in pressed_keys and 'd' in pressed_keys):
                 twist.linear.x = -2.0
                 twist.angular.z = -2.0
-            elif 'w' in pressed_keys:
+            elif 'w' in pressed_keys and not 's' in pressed_keys:
                 twist.linear.x = 2.0
-            elif 's' in pressed_keys:
+            elif 's' in pressed_keys and not 'w' in pressed_keys:
                 twist.linear.x = -2.0
-            elif 'a' in pressed_keys:
+            elif 'a' in pressed_keys and not 'd' in pressed_keys:
                 twist.angular.z = 2.0
-            elif 'd' in pressed_keys:
+            elif 'd' in pressed_keys and not 'a' in pressed_keys:
                 twist.angular.z = -2.0
             else:
                 twist.linear.x = 0.0
