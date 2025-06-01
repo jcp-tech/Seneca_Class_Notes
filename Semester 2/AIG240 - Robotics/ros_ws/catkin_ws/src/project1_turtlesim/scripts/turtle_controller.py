@@ -1,26 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import rospy
+import rospy, sys # , tty, termios
 from geometry_msgs.msg import Twist
 from pynput import keyboard  # pip install pynput==1.6.3
-import sys
-import tty
-import termios
 
 pressed_keys = set()
 listener = None  # Global so we can stop it later
 
-def get_key():
-    """Read a single keypress from stdin."""
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd)
-        key = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return key
+# def get_key():
+#     """Read a single keypress from stdin."""
+#     fd = sys.stdin.fileno()
+#     old_settings = termios.tcgetattr(fd)
+#     try:
+#         tty.setraw(fd)
+#         key = sys.stdin.read(1)
+#     finally:
+#         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+#     return key
 
 def on_press(key):
     try:
