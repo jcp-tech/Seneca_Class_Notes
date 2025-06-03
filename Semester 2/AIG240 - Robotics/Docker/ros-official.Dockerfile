@@ -2,9 +2,16 @@ FROM ros:melodic-ros-core
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# TEMPORARILY remove broken ROS repo and fix expired key
+RUN sed -i '/snapshots.ros.org/d' /etc/apt/sources.list /etc/apt/sources.list.d/* || true && \
+    apt-get update && apt-get install -y curl gnupg2 && \
+    apt-key del F42ED6FBAB17C654 || true && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add - && \
+    echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
+
 # Create user and install tools
 RUN apt-get update && apt-get install -y \
-    sudo curl gnupg2 lsb-release x11-apps vim net-tools python-pip && \
+    sudo lsb-release x11-apps vim net-tools python-pip && \
     useradd -m -u 1000 -s /bin/bash jetauto && \
     echo "jetauto ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -41,7 +48,7 @@ RUN apt-get update && apt-get install -y \
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 
-# Add Lab 4 SLAM + Navigation tools
+# Add SLAM + Navigation tools
 RUN apt-get update && apt-get install -y \
     ros-melodic-slam-gmapping \
     ros-melodic-hector-slam \

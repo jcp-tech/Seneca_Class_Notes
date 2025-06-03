@@ -2,9 +2,14 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install basic tools first (curl, gnupg2 for ROS key)
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
 # Create user and install tools
 RUN apt-get update && apt-get install -y \
-    sudo curl gnupg2 lsb-release x11-apps vim net-tools python-pip && \
+    sudo lsb-release x11-apps vim net-tools python-pip && \
     useradd -m -u 1000 -s /bin/bash jetauto && \
     echo "jetauto ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -41,7 +46,7 @@ RUN apt-get update && apt-get install -y \
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
 
-# Add Lab 4 SLAM + Navigation tools
+# Add SLAM + Navigation tools
 RUN apt-get update && apt-get install -y \
     ros-melodic-slam-gmapping \
     ros-melodic-hector-slam \
