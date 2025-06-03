@@ -21,8 +21,42 @@ RUN apt-get update && apt-get install -y \
     gazebo9 libgazebo9-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Set up environment
+RUN apt-get update && apt-get install -y \
+    ros-melodic-joint-state-publisher \
+    ros-melodic-joint-state-publisher-gui \
+    ros-melodic-robot-state-publisher \
+    ros-melodic-gazebo-ros \
+    ros-melodic-gazebo-ros-pkgs \
+    ros-melodic-gazebo-ros-control \
+    ros-melodic-xacro \
+    ros-melodic-rviz \
+    ros-melodic-controller-manager \
+    ros-melodic-transmission-interface \
+    ros-melodic-effort-controllers \
+    ros-melodic-position-controllers \
+    ros-melodic-velocity-controllers && \
+    rm -rf /var/lib/apt/lists/*
+
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
+
+# Add Lab 4 SLAM + Navigation tools
+RUN apt-get update && apt-get install -y \
+    ros-melodic-slam-gmapping \
+    ros-melodic-hector-slam \
+    ros-melodic-map-server \
+    ros-melodic-move-base \
+    ros-melodic-amcl \
+    ros-melodic-navfn \
+    ros-melodic-costmap-2d \
+    ros-melodic-global-planner \
+    ros-melodic-base-local-planner \
+    ros-melodic-teb-local-planner \
+    ros-melodic-dwa-local-planner \
+    ros-melodic-robot-localization \
+    ros-melodic-rqt-robot-steering && \
+    rm -rf /var/lib/apt/lists/*
 
 # Switch to user
 USER jetauto
