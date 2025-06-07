@@ -5,6 +5,7 @@ services:
       dockerfile: ros-ubuntu.Dockerfile
     image: ros-ubuntu:lab
     container_name: ros_ubuntu_container
+    network_mode: bridge
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
@@ -26,6 +27,7 @@ services:
       dockerfile: ros-official.Dockerfile
     image: ros-official:lab
     container_name: ros_official_container
+    network_mode: bridge
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1

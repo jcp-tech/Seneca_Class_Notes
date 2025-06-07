@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # TEMPORARILY remove broken ROS repo and fix expired key
 RUN sed -i '/snapshots.ros.org/d' /etc/apt/sources.list /etc/apt/sources.list.d/* || true && \
-    apt-get update && apt-get install -y curl gnupg2 && \
+    apt-get update && apt-get install -y curl gnupg2 lsb-release sudo x11-apps vim net-tools python-pip && \
     apt-key del F42ED6FBAB17C654 || true && \
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add - && \
     echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
