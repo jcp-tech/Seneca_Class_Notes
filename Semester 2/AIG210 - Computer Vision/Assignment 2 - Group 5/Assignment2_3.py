@@ -23,12 +23,15 @@ while True:
 
     # PART 3: Rotation
     if choice == '1':
-        angle = float(input("Enter angle in degrees (positive=CCW, negative=CW): "))
+        angle = -float(input("Enter angle in degrees (positive=CW, negative=CCW): "))
         (h, w) = img.shape[:2]
         center = (w // 2, h // 2)
         M = cv2.getRotationMatrix2D(center, angle, 1.0)
         rotated = cv2.warpAffine(img, M, (w, h))
-        cv2.imshow(f'Rotated by {angle} degrees', rotated)
+        if angle > 0:
+            cv2.imshow(f'Rotated by {angle} degrees clockwise', rotated)
+        else:
+            cv2.imshow(f'Rotated by {-angle} degrees counterclockwise', rotated)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         # cv2.imwrite(f'rotated_{int(angle)}deg.jpg', rotated) # Optionally, you can save

@@ -144,4 +144,4 @@ while(1):
         break
 
 cv.destroyAllWindows()
-root.destroy() # Clean up tkinter root
+root.destroy() # Clean up tkinter root.
