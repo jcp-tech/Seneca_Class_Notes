@@ -23,11 +23,11 @@ while True:
 
     # PART 3: Rotation
     if choice == '1':
-        angle = -float(input("Enter angle in degrees (positive=CW, negative=CCW): "))
-        (h, w) = img.shape[:2]
-        center = (w // 2, h // 2)
-        M = cv2.getRotationMatrix2D(center, angle, 1.0)
-        rotated = cv2.warpAffine(img, M, (w, h))
+        angle = -float(input("Enter angle in degrees (positive=CW, negative=CCW): ")) # Get angle from user
+        (h, w) = img.shape[:2] # Get the height and width of the image
+        center = (w // 2, h // 2) # Calculate the center of the image
+        M = cv2.getRotationMatrix2D(center, angle, 1.0) # Create rotation matrix (center, angle, scale)
+        rotated = cv2.warpAffine(img, M, (w, h)) # Apply the rotation matrix to the image (img, rotation matrix, output size)
         if angle > 0:
             cv2.imshow(f'Rotated by {angle} degrees clockwise', rotated)
         else:
@@ -40,7 +40,7 @@ while True:
     elif choice == '2':
         x = float(input("Enter scale factor for width: "))
         y = float(input("Enter scale factor for height: "))
-        resized = cv2.resize(img, None, fx=x, fy=y)
+        resized = cv2.resize(img, None, fx=x, fy=y) # Resize the image (src, dsize, scale_x, scale_y)
         cv2.imshow(f'Resized (fx={x}, fy={y})', resized)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
@@ -48,13 +48,14 @@ while True:
 
     # PART 5: Perspective Transformation
     elif choice == '3':
+        # Note: The matrix H should be defined based on the specific transformation you want to apply.
         H = np.array([
             [0.4, -0.4, 190],
             [0.15, 0.4, 100],
             [0, 0, 1]
-        ], dtype=np.float32)
+        ], dtype=np.float32) # Define the perspective transformation matrix it is a 3x3 matrix which defines how the image will be transformed 
         (h, w) = img.shape[:2]
-        perspective = cv2.warpPerspective(img, H, (w, h))
+        perspective = cv2.warpPerspective(img, H, (w, h)) # Apply the perspective transformation (image, rotation matrix, output size)
         cv2.imshow('Perspective Transform', perspective)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
