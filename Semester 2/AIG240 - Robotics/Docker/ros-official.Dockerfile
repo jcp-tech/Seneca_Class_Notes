@@ -43,9 +43,6 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-velocity-controllers && \
     rm -rf /var/lib/apt/lists/*
 
-# Initialize rosdep
-RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
-
 # SLAM + Navigation stack
 RUN apt-get update && apt-get install -y \
     ros-melodic-slam-gmapping \
@@ -101,35 +98,36 @@ RUN apt-get update && apt-get install -y \
     wget curl git lsb-release sudo \
     && apt-get clean
 
-# Switch to user
+# Initialize rosdep
+RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
+
+# -- SSH configuration
+RUN mkdir -p /var/run/sshd && \
+    echo 'jetauto:jetauto' | chpasswd && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# -- Switch to user
 USER jetauto
 WORKDIR /home/jetauto
 
-# ARG for custom catkin workspace directory (path to the folder containing devel/setup.bash)
+# -- ARG for custom catkin workspace directory (path to the folder containing devel/setup.bash)
 ARG CUSTOM_CATKIN_WS_DIR=""
 
-# Auto-source ROS and then custom catkin workspace
-RUN { \\\
-        echo '# Source ROS main setup'; \\\
-        echo 'source /opt/ros/melodic/setup.bash'; \\\
-        echo '# Check and source custom catkin workspace'; \\\
-        echo 'CUSTOM_WS_DIR_ENV="'"$CUSTOM_CATKIN_WS_DIR"'"'; \\\
-        echo 'if [ -n "$CUSTOM_WS_DIR_ENV" ] && [ -f "$CUSTOM_WS_DIR_ENV/devel/setup.bash" ]; then'; \\\
-        echo '  echo "Sourcing custom catkin workspace from $CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \\\
-        echo '  source "$CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \\\
-        echo 'elif [ -n "$CUSTOM_WS_DIR_ENV" ]; then'; \\\
-        echo '  echo "Custom catkin workspace configured at $CUSTOM_WS_DIR_ENV, but devel/setup.bash not found."'; \\\
-        echo 'fi'; \\\
+# -- Auto-source ROS and custom catkin workspace
+RUN { \
+        echo '# Source ROS main setup'; \
+        echo 'source /opt/ros/melodic/setup.bash'; \
+        echo '# Check and source custom catkin workspace'; \
+        echo 'CUSTOM_WS_DIR_ENV="'"$CUSTOM_CATKIN_WS_DIR"'"'; \
+        echo 'if [ -n "$CUSTOM_WS_DIR_ENV" ] && [ -f "$CUSTOM_WS_DIR_ENV/devel/setup.bash" ]; then'; \
+        echo '  echo "Sourcing custom catkin workspace from $CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \
+        echo '  source "$CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \
+        echo 'elif [ -n "$CUSTOM_WS_DIR_ENV" ]; then'; \
+        echo '  echo "Custom catkin workspace configured at $CUSTOM_WS_DIR_ENV, but devel/setup.bash not found."'; \
+        echo 'fi'; \
     } >> /home/jetauto/.bashrc
 
-RUN mkdir -p /var/run/sshd
-RUN echo 'jetauto:jetauto' | chpasswd
-
-RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-
 EXPOSE 22
-
 ENV DISPLAY=:0
-
 CMD ["bash"]
