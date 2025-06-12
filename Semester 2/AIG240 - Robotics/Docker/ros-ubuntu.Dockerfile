@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Basic Tools
+# Basic Tools | Unique to ROS-Ubuntu
 RUN apt-get update && \
     apt-get install -y curl gnupg2 lsb-release sudo x11-apps vim net-tools python-pip && \
     rm -rf /var/lib/apt/lists/*
@@ -61,14 +61,73 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-rqt-robot-steering && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Gazebo and additional ROS packages
+RUN apt-get update && apt-get install -y \
+    ros-melodic-gazebo-ros-control \
+    ros-melodic-urdf \
+    ros-melodic-urdf-tutorial \
+    ros-melodic-xacro \
+    ros-melodic-joint-state-publisher \
+    ros-melodic-robot-state-publisher \
+    ros-melodic-urdfdom-py \
+    ros-melodic-rviz \
+    ros-melodic-rqt-robot-steering \
+    ros-melodic-rqt-graph \
+    ros-melodic-rqt-console \
+    ros-melodic-rqt-gui \
+    ros-melodic-rqt-common-plugins \
+    ros-melodic-ros-control \
+    ros-melodic-controller-manager \
+    ros-melodic-diff-drive-controller \
+    ros-melodic-robot-localization \
+    ros-melodic-tf \
+    ros-melodic-tf2 \
+    ros-melodic-roslaunch \
+    ros-melodic-turtlesim \
+    ros-melodic-teleop-twist-keyboard \
+    openssh-server \
+    net-tools \
+    iputils-ping \
+    iproute2 \
+    xauth \
+    python-pip \
+    python3-pip \
+    python3-pynput \
+    python-catkin-tools \
+    build-essential \
+    nano vim tmux screen \
+    wget curl git lsb-release sudo \
+    && apt-get clean
+
 # Switch to user
 USER jetauto
 WORKDIR /home/jetauto
 
-# Source both ROS and your external workspace if mounted
-RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc && \
-    echo 'if [ -f "/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash" ]; then' >> ~/.bashrc && \
-    echo '  source "/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash"' >> ~/.bashrc && \
-    echo 'fi' >> ~/.bashrc
+# ARG for custom catkin workspace directory (path to the folder containing devel/setup.bash)
+ARG CUSTOM_CATKIN_WS_DIR=""
+
+# Auto-source ROS and then custom catkin workspace
+RUN { \\\
+        echo '# Source ROS main setup'; \\\
+        echo 'source /opt/ros/melodic/setup.bash'; \\\
+        echo '# Check and source custom catkin workspace'; \\\
+        echo 'CUSTOM_WS_DIR_ENV="'"$CUSTOM_CATKIN_WS_DIR"'"'; \\\
+        echo 'if [ -n "$CUSTOM_WS_DIR_ENV" ] && [ -f "$CUSTOM_WS_DIR_ENV/devel/setup.bash" ]; then'; \\\
+        echo '  echo "Sourcing custom catkin workspace from $CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \\\
+        echo '  source "$CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \\\
+        echo 'elif [ -n "$CUSTOM_WS_DIR_ENV" ]; then'; \\\
+        echo '  echo "Custom catkin workspace configured at $CUSTOM_WS_DIR_ENV, but devel/setup.bash not found."'; \\\
+        echo 'fi'; \\\
+    } >> /home/jetauto/.bashrc
+
+RUN mkdir -p /var/run/sshd
+RUN echo 'jetauto:jetauto' | chpasswd
+
+RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+EXPOSE 22
+
+ENV DISPLAY=:0
 
 CMD ["bash"]

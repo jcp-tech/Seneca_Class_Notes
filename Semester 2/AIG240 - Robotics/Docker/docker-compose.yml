@@ -3,9 +3,13 @@ services:
     build:
       context: .
       dockerfile: ros-ubuntu.Dockerfile
+      args:
+        - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-ubuntu:lab
     container_name: ros_ubuntu_container
     network_mode: bridge
+    ports:
+      - "22:22"              # SSH from host → container directly (port 22)
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
@@ -25,9 +29,13 @@ services:
     build:
       context: .
       dockerfile: ros-official.Dockerfile
+      args:
+        - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-official:lab
     container_name: ros_official_container
     network_mode: bridge
+    ports:
+      - "22:22"              # SSH from host → container directly (port 22)
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
