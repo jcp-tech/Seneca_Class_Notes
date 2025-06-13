@@ -9,10 +9,10 @@ services:
     container_name: ros_ubuntu_container
     # Common settings for both containers
     network_mode: host                # Use 'host' for easier ROS networking & GUI (change if conflicts)
-    command: /usr/sbin/sshd -D
     ports:
       # - "22:22"              # SSH from host → container directly (port 22)
       - "2222:22"   # Host port 2222 → container's port 22
+    # command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=${DISPLAY}            # Use your system's DISPLAY variable for GUI
       - QT_X11_NO_MITSHM=1
@@ -41,10 +41,10 @@ services:
     container_name: ros_official_container
     # Common settings for both containers
     network_mode: host                # Use 'host' for easier ROS networking & GUI (change if conflicts)
-    command: /usr/sbin/sshd -D
     ports:
       # - "22:22"              # SSH from host → container directly (port 22)
       - "2222:22"   # Host port 2222 → container's port 22
+    # command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=${DISPLAY}            # Use your system's DISPLAY variable for GUI
       - QT_X11_NO_MITSHM=1
