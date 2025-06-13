@@ -10,6 +10,7 @@ services:
     network_mode: bridge
     ports:
       - "22:22"              # SSH from host → container directly (port 22)
+    command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
@@ -36,6 +37,7 @@ services:
     network_mode: bridge
     ports:
       - "22:22"              # SSH from host → container directly (port 22)
+    command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=:0
       - QT_X11_NO_MITSHM=1
