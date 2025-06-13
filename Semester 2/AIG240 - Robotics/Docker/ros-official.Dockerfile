@@ -89,14 +89,16 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     iproute2 \
     xauth \
-    python-pip \
-    python3-pip \
-    python3-pynput \
     python-catkin-tools \
     build-essential \
     nano vim tmux screen \
     wget curl git lsb-release sudo \
     && apt-get clean
+
+# Then ADD this:
+RUN apt-get update && apt-get install -y python-pip python3-pip
+RUN pip install --no-cache-dir pynput==1.6.3
+RUN python3 -m pip install --no-cache-dir pynput==1.6.3
 
 # Initialize rosdep
 RUN rosdep init && rosdep update && rosdep update --rosdistro=melodic
@@ -115,18 +117,8 @@ WORKDIR /home/jetauto
 ARG CUSTOM_CATKIN_WS_DIR=""
 
 # -- Auto-source ROS and custom catkin workspace
-RUN { \
-        echo '# Source ROS main setup'; \
-        echo 'source /opt/ros/melodic/setup.bash'; \
-        echo '# Check and source custom catkin workspace'; \
-        echo 'CUSTOM_WS_DIR_ENV="'"$CUSTOM_CATKIN_WS_DIR"'"'; \
-        echo 'if [ -n "$CUSTOM_WS_DIR_ENV" ] && [ -f "$CUSTOM_WS_DIR_ENV/devel/setup.bash" ]; then'; \
-        echo '  echo "Sourcing custom catkin workspace from $CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \
-        echo '  source "$CUSTOM_WS_DIR_ENV/devel/setup.bash"'; \
-        echo 'elif [ -n "$CUSTOM_WS_DIR_ENV" ]; then'; \
-        echo '  echo "Custom catkin workspace configured at $CUSTOM_WS_DIR_ENV, but devel/setup.bash not found."'; \
-        echo 'fi'; \
-    } >> /home/jetauto/.bashrc
+RUN echo "if [ -f \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\" ]; then source \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\"; fi" >> /home/jetauto/.bashrc
+# RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /home/jetauto/.bashrc
 
 EXPOSE 22
 ENV DISPLAY=:0

@@ -9,7 +9,8 @@ services:
     container_name: ros_ubuntu_container
     network_mode: bridge
     ports:
-      - "22:22"              # SSH from host → container directly (port 22)
+      # - "22:22"              # SSH from host → container directly (port 22)
+      - "2222:22"   # Host port 2222 → container's port 22
     command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=:0
@@ -36,7 +37,8 @@ services:
     container_name: ros_official_container
     network_mode: bridge
     ports:
-      - "22:22"              # SSH from host → container directly (port 22)
+      # - "22:22"              # SSH from host → container directly (port 22)
+      - "2223:22"   # Host port 2223 → container's port 22
     command: /usr/sbin/sshd -D
     environment:
       - DISPLAY=:0
