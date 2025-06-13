@@ -7,18 +7,22 @@ services:
         - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-ubuntu:lab
     container_name: ros_ubuntu_container
-    network_mode: bridge
+    # Common settings for both containers
+    network_mode: host                # Use 'host' for easier ROS networking & GUI (change if conflicts)
+    command: /usr/sbin/sshd -D
     ports:
       # - "22:22"              # SSH from host → container directly (port 22)
       - "2222:22"   # Host port 2222 → container's port 22
-    command: /usr/sbin/sshd -D
     environment:
-      - DISPLAY=:0
+      - DISPLAY=${DISPLAY}            # Use your system's DISPLAY variable for GUI
       - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
     volumes:
       - ./:/workspace
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
+      # - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host
     devices:
       - /dev/dri
@@ -35,18 +39,22 @@ services:
         - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-official:lab
     container_name: ros_official_container
-    network_mode: bridge
+    # Common settings for both containers
+    network_mode: host                # Use 'host' for easier ROS networking & GUI (change if conflicts)
+    command: /usr/sbin/sshd -D
     ports:
       # - "22:22"              # SSH from host → container directly (port 22)
-      - "2223:22"   # Host port 2223 → container's port 22
-    command: /usr/sbin/sshd -D
+      - "2222:22"   # Host port 2222 → container's port 22
     environment:
-      - DISPLAY=:0
+      - DISPLAY=${DISPLAY}            # Use your system's DISPLAY variable for GUI
       - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.docker.xauth
     volumes:
       - ./:/workspace
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
+      # - /tmp/.docker.xauth:/tmp/.docker.xauth
+      - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host
     devices:
       - /dev/dri
