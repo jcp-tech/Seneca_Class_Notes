@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: ros-ubuntu.Dockerfile
-      args:
-        - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
+      # args:
+      #   - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-ubuntu:lab
     container_name: ros_ubuntu_container
     # Common settings for both containers
@@ -21,7 +21,8 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
-      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws
+      # - /home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/jetauto_ws/:/home/jetauto/jetauto_ws # Use this if you Don't have the Symbolic Link set up
+      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws # Use this if you have the Symbolic Link set up
       # - /tmp/.docker.xauth:/tmp/.docker.xauth
       - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host
@@ -36,8 +37,8 @@ services:
     build:
       context: .
       dockerfile: ros-official.Dockerfile
-      args:
-        - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
+      # args:
+      #   - CUSTOM_CATKIN_WS_DIR=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws
     image: ros-official:lab
     container_name: ros_official_container
     # Common settings for both containers
@@ -54,7 +55,8 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
-      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws
+      # - /home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/jetauto_ws/:/home/jetauto/jetauto_ws # Use this if you Don't have the Symbolic Link set up
+      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws # Use this if you have the Symbolic Link set up
       # - /tmp/.docker.xauth:/tmp/.docker.xauth
       - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host

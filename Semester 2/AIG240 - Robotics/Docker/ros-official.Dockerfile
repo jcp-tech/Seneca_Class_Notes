@@ -121,12 +121,7 @@ RUN mkdir -p /var/run/sshd && \
 USER jetauto
 WORKDIR /home/jetauto
 
-# -- ARG for custom catkin workspace directory (path to the folder containing devel/setup.bash)
-ARG CUSTOM_CATKIN_WS_DIR=""
-
 # -- Auto-source ROS and custom catkin workspace
-RUN echo "if [ -f \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\" ]; then source \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\"; fi" >> /home/jetauto/.bashrc
-# RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /home/jetauto/.bashrc
 RUN echo "source /home/jetauto/jetauto_ws/devel/setup.bash" >> /home/jetauto/.bashrc
 
 RUN echo 'export LIDAR_TYPE="A1"' >> ~/.bashrc
