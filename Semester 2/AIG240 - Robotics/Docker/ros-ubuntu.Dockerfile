@@ -74,6 +74,7 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-rqt-gui \
     ros-melodic-rqt-common-plugins \
     ros-melodic-ros-control \
+    ros-melodic-ros-controllers \
     ros-melodic-controller-manager \
     ros-melodic-diff-drive-controller \
     ros-melodic-robot-localization \
@@ -82,8 +83,15 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-roslaunch \
     ros-melodic-turtlesim \
     ros-melodic-teleop-twist-keyboard \
+    ros-melodic-joint-trajectory-controller \
+    python-rospkg \
+    python-yaml \
+    ros-melodic-joy \
     openssh-server \
     net-tools \
+    libuvc-dev \
+    libopenni2-dev \
+    lsof \
     iputils-ping \
     iproute2 \
     xauth \
@@ -96,8 +104,7 @@ RUN apt-get update && apt-get install -y \
 # Then ADD this:
 RUN apt-get update && apt-get install -y python-pip python3-pip
 RUN pip install --no-cache-dir pynput==1.6.3
-RUN python3 -m pip install --no-cache-dir pynput==1.6.3
-
+RUN python3 -m pip install --no-cache-dir pynput==1.6.3 pyyaml
 
 # Initialize rosdep
 RUN rosdep init && rosdep update
@@ -118,6 +125,13 @@ ARG CUSTOM_CATKIN_WS_DIR=""
 # -- Auto-source ROS and custom catkin workspace
 RUN echo "if [ -f \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\" ]; then source \"$CUSTOM_CATKIN_WS_DIR/devel/setup.bash\"; fi" >> /home/jetauto/.bashrc
 # RUN echo "source /mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel/setup.bash" >> /home/jetauto/.bashrc
+RUN echo "source /home/jetauto/jetauto_ws/devel/setup.bash" >> /home/jetauto/.bashrc
+
+RUN echo 'export LIDAR_TYPE="A1"' >> ~/.bashrc
+RUN echo 'export DEPTH_CAMERA_TYPE="AstraProPlus"' >> ~/.bashrc
+RUN echo 'export MACHINE_TYPE="JetAutoPro"' >> ~/.bashrc
+RUN echo 'export HOST="/"' >> ~/.bashrc
+RUN echo 'export MASTER="/"' >> ~/.bashrc
 
 EXPOSE 22
 ENV DISPLAY=:0

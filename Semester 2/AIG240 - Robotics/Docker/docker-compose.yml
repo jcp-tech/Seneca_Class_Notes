@@ -21,6 +21,7 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
+      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws
       # - /tmp/.docker.xauth:/tmp/.docker.xauth
       - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host
@@ -53,6 +54,7 @@ services:
       - ./:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /home/jetauto:/mnt/host
+      - /home/jetauto/jetauto_ws:/home/jetauto/jetauto_ws
       # - /tmp/.docker.xauth:/tmp/.docker.xauth
       - /etc/localtime:/etc/localtime:ro
     working_dir: /mnt/host
