@@ -101,3 +101,15 @@ xeyes
 ```bash
 cd 'Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/Docker/'
 ```
+
+---
+---
+
+> **NOTE:** Use this file path in your Linux (e.g., `/home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics`).
+>
+> **THEN RUN:**  
+> ```bash
+> ln -s "/home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/jetauto_ws" /home/jetauto/jetauto_ws
+> ```
+>
+> **DO THIS:** *before you build the Docker Containers.*

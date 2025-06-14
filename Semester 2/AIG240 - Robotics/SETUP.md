@@ -349,7 +349,3 @@ Make sure `turtlesim_node` is running before calling `/spawn` or `/set_pen`.
 ✅ You now have ROS Melodic + TurtleSim working inside WSL with GUI support!
 
 ```
-
-NOTE: Use this File Path in your Linux (eg: /home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics)
-THEN RUN -> `ln -s "/home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/jetauto_ws" /home/jetauto/jetauto_ws`
-DO THIS = before you build the Docker Containers.
