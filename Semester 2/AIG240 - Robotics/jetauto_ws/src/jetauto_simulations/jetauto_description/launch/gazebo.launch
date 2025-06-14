@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="odom_frame"  default="odom"/>
+    <arg name="base_frame"  default="base_footprint"/>
+    <arg name="depth_camera_name"   default="camera"/>
+    <param name="robot_description" command="$(find xacro)/xacro '$(find jetauto_description)/urdf/jetauto.urdf.xacro' odom_frame:=$(arg odom_frame) base_frame:=$(arg base_frame) depth_camera_name:=$(arg depth_camera_name) lidar_view:=false" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+    <node
+      name="spawn_model"
+      pkg="gazebo_ros"
+      type="spawn_model"
+      args="-urdf -param robot_description -model jetauto"
+      output="screen" />
+    <node
+      name="fake_joint_calibration"
+      pkg="rostopic"
+      type="rostopic"
+      args="pub /calibrated std_msgs/Bool true" />
+</launch>

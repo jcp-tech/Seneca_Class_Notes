@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="jetauto_controller" pkg="jetauto_controller" type="jetauto_controller_main.py" required="true" output="screen" >
+        <rosparam file="$(find jetauto_controller)/config/calibrate_params.yaml" command="load"/>
+    </node>
+</launch>

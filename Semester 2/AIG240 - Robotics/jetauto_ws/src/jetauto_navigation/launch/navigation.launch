@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="map"         default=""/>
+    <arg name="sim"         default="false"/>
+    <arg name="drive_type"  default="diff"/>
+    <arg name="robot_name"  default="$(env HOST)"/>
+    <arg name="master_name" default="$(env MASTER)"/>
+
+    <include file="$(find jetauto_navigation)/launch/include/load_map.launch">
+        <arg name="map"         value="$(arg map)"/>
+        <arg name="robot_name"  value="$(arg robot_name)"/>
+    </include>
+
+    <include file="$(find jetauto_slam)/launch/include/jetauto_robot.launch">
+        <arg name="sim"         value="$(arg sim)"/>
+        <arg name="use_joy"     value="false"/>
+        <arg name="robot_name"  value="$(arg robot_name)"/>
+        <arg name="master_name" value="$(arg master_name)"/>
+    </include>
+
+    <include file="$(find jetauto_navigation)/launch/include/navigation_base.launch">
+        <arg name="drive_type"  value="$(arg drive_type)"/>
+        <arg name="robot_name"  value="$(arg robot_name)"/>
+        <arg name="master_name" value="$(arg master_name)"/>
+    </include>
+</launch>

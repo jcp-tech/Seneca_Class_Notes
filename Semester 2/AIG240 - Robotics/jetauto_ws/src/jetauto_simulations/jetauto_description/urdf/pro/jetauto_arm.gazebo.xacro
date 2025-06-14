@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<robot name="jetauto_arm" xmlns:xacro="http://ros.org/wiki/xacro">
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so" />
+    </gazebo>
+    <xacro:macro name="model_color" params="link_name color_name">
+        <gazebo reference="${link_name}">
+            <material>Gazebo/${color_name}</material>
+            <turnGravityOff>false</turnGravityOff>
+        </gazebo>
+    </xacro:macro>
+
+    <xacro:model_color link_name="link1"                color_name="green"/>
+    <xacro:model_color link_name="servo_link"           color_name="black"/>
+    <xacro:model_color link_name="link2"                color_name="green"/>
+    <xacro:model_color link_name="link3"                color_name="green"/>
+    <xacro:model_color link_name="link4"                color_name="green"/>
+    <xacro:model_color link_name="gripper_servo_link"   color_name="black"/>
+</robot>

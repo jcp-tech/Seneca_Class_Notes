@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="depth_camera_type"   value="$(env DEPTH_CAMERA_TYPE)" doc="depth_camera_type [AstraPro]"/>
+    <arg name="depth_camera_name"   default="camera" />
+    <arg name="image_topic"         default="image_raw" />
+    <arg name="tf_prefix"           default=""/>
+
+    <param name="depth_camera/camera_name"  value="$(arg depth_camera_name)"/>
+    <param name="depth_camera/image_topic"  value="$(arg image_topic)"/>
+
+    <!-- 启动摄像头节点(start camera node) -->
+    <include if="$(eval depth_camera_type == 'AstraPro')" file="$(find astra_camera)/launch/astrapro.launch">
+        <arg name="camera"      value="$(arg depth_camera_name)" />
+        <arg name="tf_prefix"   value="$(arg tf_prefix)" />
+    </include>
+    <include if="$(eval depth_camera_type == 'AstraProPlus')" file="$(find astra_camera)/launch/astra_pro_plus.launch">
+        <arg name="camera"      value="$(arg depth_camera_name)" />
+        <arg name="tf_prefix"   value="$(arg tf_prefix)" />
+    </include>
+</launch>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="use_depth_cam"       default="true"/>
+    <arg name="usb_cam_name"        default="usb_cam"/>
+    <arg name="depth_camera_name"   default="camera"/>
+
+    <!--USB摄像头-->
+    <include unless="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/usb_cam.launch">
+        <arg name="usb_cam_name" value="$(arg usb_cam_name)"/>
+    </include>
+
+    <!--深度摄像头-->
+    <include if="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/astrapro.launch">
+        <arg name="depth_camera_name" value="$(arg depth_camera_name)"/>
+    </include>
+
+    <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+    <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen">
+        <param name="horizontal" value="true"/>
+    </node>
+
+    <node if="$(arg use_depth_cam)" name="orb_slam3_mono" pkg="ORB_SLAM3" type="Mono" output="screen" args="$(find ORB_SLAM3)/../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)/../../Monocular/TUM1.yaml">
+        <remap from="/camera/image_raw"     to="/$(arg depth_camera_name)/rgb/image_raw" />
+        <remap from="/camera/camera_info"   to="/$(arg depth_camera_name)/rgb/camera_info" />
+    </node>
+    <node unless="$(arg use_depth_cam)" name="orb_slam3_mono" pkg="ORB_SLAM3" type="Mono" output="screen" args="$(find ORB_SLAM3)/../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)/../../Monocular/TUM1.yaml">
+        <remap from="/camera/image_raw"     to="/$(arg usb_cam_name)/image_raw" />
+        <remap from="/camera/camera_info"   to="/$(arg usb_cam_name)/camera_info" />
+    </node>
+</launch>

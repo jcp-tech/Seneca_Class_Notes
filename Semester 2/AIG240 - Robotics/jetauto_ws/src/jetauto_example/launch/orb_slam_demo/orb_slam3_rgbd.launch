@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="depth_camera_name" default="camera"/>
+
+    <!--深度摄像头-->
+    <include file="$(find jetauto_peripherals)/launch/astrapro.launch">
+        <arg name="depth_camera_name" value="$(arg depth_camera_name)"/>
+    </include>
+
+    <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+    <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen"/>
+
+    <node name="orb_slam3_rgbd" pkg="ORB_SLAM3" type="RGBD" output="screen" args="$(find ORB_SLAM3)/../../../Vocabulary/ORBvoc.txt $(find ORB_SLAM3)/../../RGB-D/TUM1.yaml">
+        <remap from="/camera/rgb/image_raw"                 to="/$(arg depth_camera_name)/rgb/image_raw" />
+        <remap from="/camera/depth_registered/image_raw"    to="/$(arg depth_camera_name)/depth/image_raw" />
+    </node>
+</launch>

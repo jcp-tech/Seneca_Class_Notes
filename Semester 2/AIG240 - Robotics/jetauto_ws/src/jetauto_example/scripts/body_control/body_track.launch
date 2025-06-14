@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find jetauto_peripherals)/launch/astrapro.launch"/>
+    <include file="$(find jetauto_controller)/launch/jetauto_controller.launch"/>
+    <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+
+    <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen"/>
+    <node pkg="jetauto_example" type="body_track.py" name="body_track" output="screen"/>
+</launch>

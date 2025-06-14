@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="debug"               default="false"/>
+    <arg name="place_without_color" default="true"/>
+    <arg name="broadcast"           default="false"/>
+
+    <include file="$(find jetauto_slam)/launch/include/jetauto_robot.launch">
+        <arg name="master_name" value="/"/>
+        <arg name="robot_name"  value="/"/>
+        <arg name="set_pose" value="false"/>
+    </include>
+
+    <node name="automatic_pick" pkg="jetauto_example" type="automatic_pick.py" output="screen">
+        <param name="debug"                 value="$(arg debug)"/>
+        <param name="broadcast"             value="$(arg broadcast)"/>
+        <param name="place_without_color"   value="$(arg place_without_color)"/>
+    </node>
+</launch>

@@ -1,2 +1,0 @@
-lab3_turtlesim:project1_turtlesim
--DCATKIN_DEVEL_PREFIX=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/install -G Unix Makefiles

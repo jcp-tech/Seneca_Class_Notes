@@ -1,0 +1,5 @@
+string cmd
+int16 id
+---
+bool success
+float32[] value

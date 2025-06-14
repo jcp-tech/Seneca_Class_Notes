@@ -1,8 +1,0 @@
-prefix=/mnt/host/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/ros_ws/catkin_ws/devel
-
-Name: project1_turtlesim
-Description: Description of project1_turtlesim
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

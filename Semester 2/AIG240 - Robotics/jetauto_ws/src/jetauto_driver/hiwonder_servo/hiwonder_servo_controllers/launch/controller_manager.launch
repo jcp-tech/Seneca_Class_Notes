@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="hiwonder_servo_manager" pkg="hiwonder_servo_controllers" type="controller_manager.py" required="true" output="screen">
+        <rosparam file="$(find hiwonder_servo_controllers)/config/hiwonder_servo_controller.yaml" command="load"/>
+    </node>
+</launch>

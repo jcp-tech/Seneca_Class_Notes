@@ -1,0 +1,13 @@
+[Unit]
+Description=fan control
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+ExecStart=/home/jetauto/jetauto_ws/src/jetauto_bringup/scripts/fan_control.py
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

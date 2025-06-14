@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="machine_type"   default="$(env MACHINE_TYPE)" />
+    <arg     if="$(eval machine_type == 'JetAutoPro')" name="use_depth_cam"  value="false"/>
+    <arg unless="$(eval machine_type == 'JetAutoPro')" name="use_depth_cam"  value="true"/>
+
+    <!--启动颜色跟踪节点(start color tracking node)-->
+    <node name="object_tracking" pkg="jetauto_app" type="object_tracking.py" output="screen">
+        <param name="use_depth_cam" value="$(arg use_depth_cam)"/>
+    </node>
+</launch>
+

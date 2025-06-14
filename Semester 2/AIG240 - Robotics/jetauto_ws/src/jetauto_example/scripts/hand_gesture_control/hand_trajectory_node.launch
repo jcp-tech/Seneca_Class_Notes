@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="use_depth_cam"   default="true"/>
+
+    <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+    <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen">
+        <param name="horizontal" value="true"/>
+    </node>
+    <include     if="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/astrapro.launch"/>
+    <include unless="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/usb_cam.launch"/>
+
+    <node pkg="jetauto_example" type="hand_trajectory_node.py" name="hand_trajectory_node" output="screen">
+        <param name="use_depth_cam"  value="$(arg use_depth_cam)"/>
+    </node>
+
+</launch>

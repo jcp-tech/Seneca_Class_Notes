@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="robot_name"  default="$(env HOST)"/>
+    <node name="teleop_key_control" pkg="jetauto_peripherals" type="teleop_key_control.py" output="screen" ns="$(arg robot_name)"/>
+</launch>

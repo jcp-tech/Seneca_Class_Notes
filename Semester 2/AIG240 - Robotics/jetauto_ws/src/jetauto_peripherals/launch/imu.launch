@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="gui"                 default="true"/>
+    <arg name="freq"                default="50"/>
+    <arg name="debug"               default="false"/>
+    <arg name="imu_raw_topic"       default="imu_raw"/>
+    <arg name="imu_frame"           default="imu_frame"/>
+    <arg name="imu_link"            default="imu_link"/>
+    <arg name="imu_topic"           default="imu_data"/>
+    <arg name="odom_frame"          default="odom"/>
+    <arg name="base_frame"          default="base_footprint"/>
+    <arg name="depth_camera_name"   default="camera"/>
+
+    <group if="$(arg debug)">
+        <param name="robot_description" command="$(find xacro)/xacro '$(find jetauto_description)/urdf/jetauto.urdf.xacro' odom_frame:=$(arg odom_frame) base_frame:=$(arg base_frame) depth_camera_name:=$(arg depth_camera_name) lidar_view:=false" />
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+        <node name="tf_broadcaster_imu" pkg="mpu_6050_driver" type="tf_broadcaster_imu.py" output="screen">
+            <param name="imu_topic" value="$(arg imu_topic)"/>
+            <param name="imu_frame" value="$(arg imu_frame)"/>
+            <param name="imu_link"  value="$(arg imu_link)"/>
+        </node>
+    </group>
+
+    <node name="imu" pkg="mpu_6050_driver" type="imu_node.py"  output="screen">
+        <param name="imu_raw" value="$(arg imu_raw_topic)"/>
+        <param name="freq"    value="$(arg freq)"/>
+        <param     if="$(arg debug)" name="imu_frame" value="$(arg imu_frame)"/>
+        <param unless="$(arg debug)" name="imu_frame" value="$(arg imu_link)"/>
+    </node>
+
+    <node name="imu_calib" pkg="imu_calib" type="apply_calib" output="screen" >
+      <param name="calib_file" value="$(find jetauto_calibration)/config/imu_calib.yaml" />
+      <remap from="raw"        to="$(arg imu_raw_topic)" />
+      <remap from="corrected"  to="imu_corrected"/>
+    </node>
+
+    <node name="imu_filter" pkg="imu_complementary_filter" type="complementary_filter_node" >
+      <param name="use_mag"      value="false"/>
+      <remap from="imu/data_raw" to="imu_corrected"/>
+      <remap from="imu/data"     to="$(arg imu_topic)"/>
+    </node>
+
+    <node if="$(arg debug)" name="rviz" pkg="rviz" type="rviz" args="-d $(find jetauto_peripherals)/rviz/imu_view.rviz"/>
+</launch>

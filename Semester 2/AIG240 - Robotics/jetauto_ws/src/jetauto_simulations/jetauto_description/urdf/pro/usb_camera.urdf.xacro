@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="usb_cam" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI"               value="3.1415926535897931"/>
+  <xacro:property name="usb_camera_name"    default="usb_cam" />
+
+  <link
+    name="${usb_camera_name}_link">
+    <inertial>
+      <origin
+        xyz="-1.436E-07 0.0030469 -0.012971"
+        rpy="0 0 0" />
+      <mass value="0.00001" />
+      <inertia
+        ixx="10"
+        ixy="0"
+        ixz="0"
+        iyy="10"
+        iyz="0"
+        izz="10" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jetauto_description/meshes/pro/usb_cam_link.stl" />
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://jetauto_description/meshes/pro/usb_cam_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="${usb_camera_name}_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0014233 -0.042451 0.050633"
+      rpy="0 0 0" />
+    <parent
+      link="link4" />
+    <child
+      link="${usb_camera_name}_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

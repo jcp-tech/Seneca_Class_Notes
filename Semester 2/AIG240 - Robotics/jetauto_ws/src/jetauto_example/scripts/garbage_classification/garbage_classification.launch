@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="debug"           default="false"/>
+    <arg name="start"           default="true"/>
+    <arg name="use_depth_cam"   default="false"/>
+    <arg name="broadcast"       default="false"/>
+
+    <include if="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/astrapro.launch"/>
+    <include unless="$(arg use_depth_cam)" file="$(find jetauto_peripherals)/launch/usb_cam.launch"/>
+    <include file="$(find jetauto_controller)/launch/jetauto_controller.launch"/>
+
+    <arg name="node_name" default="yolov5_node" />
+    <rosparam param="/$(arg node_name)/classes">['BananaPeel','BrokenBones','CigaretteEnd','DisposableChopsticks','Ketchup','Marker','OralLiquidBottle','Plate','PlasticBottle','StorageBattery','Toothbrush', 'Umbrella']</rosparam>
+    <node pkg="jetauto_example" type="yolov5_node.py" name="$(arg node_name)" output="screen">
+        <param name="use_depth_cam" value="$(arg use_depth_cam)"/>
+        <param name="engine"        value="garbage_classification_320s_6_2.engine"/>
+        <param name="lib"           value="libmyplugins_320.so"/>
+        <param name="conf_thresh"   value="0.8"/>
+    </node>
+
+    <node pkg="jetauto_example" type="garbage_classification.py" name="garbage_classification" output="screen">
+        <param name="start"     value="$(arg start)"/>
+        <param name="debug"     value="$(arg debug)"/>
+        <param name="broadcast" value="$(arg broadcast)"/>
+    </node>
+</launch>

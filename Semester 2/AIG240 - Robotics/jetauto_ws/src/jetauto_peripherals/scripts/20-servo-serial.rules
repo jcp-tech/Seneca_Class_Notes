@@ -1,0 +1,1 @@
+KERNEL=="ttyTHS1", SUBSYSTEM=="tty", GROUP="users", MODE="0777"

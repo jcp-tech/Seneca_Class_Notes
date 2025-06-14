@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--线速度校准(linear velocity calibration)-->
+<launch>
+    <arg name="go"              default="false"/>
+    <arg name="linear"          default="false"/>
+    <arg name="machine_type"    default="$(env MACHINE_TYPE)"/>
+
+    <!--机器人urdf模型加载(load robot urdf model)-->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find jetauto_description)/urdf/jetauto.urdf.xacro'
+    odom_frame:=odom base_frame:=base_footprint depth_camera_name:=camera lidar_view:=false"/>
+
+    <!--tf转换和发布(tf conversion and publishing)-->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+
+    <!--底盘驱动(chassis driver)-->
+    <include file="$(find jetauto_controller)/launch/jetauto_controller.launch"/>
+
+    <!--odom发布(odom publishing)-->
+    <include file="$(find jetauto_controller)/launch/odom_publish.launch"/>
+
+    <!--线速度校准(linear velocity calibration)-->
+    <node name="calibrate_linear" pkg="jetauto_calibration" type="calibrate_linear.py" output="screen"/>
+
+    <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+    <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen"/>
+
+    <!--rqt-->
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="calibrate_rqt_reconfigure"/>
+
+    <!--参数重赋值(reassign the parameter)-->
+    <param if="$(arg linear)" name="/jetauto_odom_publisher/linear_correction_factor"   value="1.0"/>
+    <param if="$(arg go)" name="/jetauto_controller/go_factor"                          value="1.0"/>
+</launch>

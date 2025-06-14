@@ -1,0 +1,14 @@
+[Unit]
+Description=voltage detect
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=jetauto
+ExecStart=/home/jetauto/jetauto_ws/src/jetauto_bringup/scripts/source_env.bash /home/jetauto/jetauto_ws/src/jetauto_bringup/scripts/voltage_detect.py
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

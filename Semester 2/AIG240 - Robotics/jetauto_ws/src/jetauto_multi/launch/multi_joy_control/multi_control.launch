@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="master"          default="$(env MASTER)"/>
+    <arg name="robot_name"      default="$(env HOST)"/>
+    <arg name="cmd_vel_topic"   default="/jetauto_controller/cmd_vel"/>
+
+    <group ns="$(arg robot_name)">
+        <!--底盘驱动-->
+        <node name="jetauto_controller" pkg="jetauto_controller" type="jetauto_controller_main.py" required="true" output="screen">
+            <remap from="jetauto_controller/cmd_vel" to="$(arg cmd_vel_topic)"/>
+        </node>
+
+        <include file="$(find hiwonder_servo_controllers)/launch/start.launch"/>
+        <node name="init_pose" pkg="jetauto_slam" type="init_pose.py" output="screen"/>
+    </group>
+
+    <include if="$(eval master == robot_name)" file="$(find jetauto_multi)/launch/joy_control.launch"/>
+</launch>

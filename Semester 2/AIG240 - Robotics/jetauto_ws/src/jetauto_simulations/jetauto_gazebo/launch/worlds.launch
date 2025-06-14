@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="robot_name"  default="$(env HOST)"/>
+    <arg name="lidar_view"  default="false"/>
+
+    <!-- startup simulated world -->
+    <include file="$(find jetauto_gazebo)/launch/empty_world.launch">
+        <arg name="paused"          value="false"/>
+        <arg name="use_sim_time"    value="true"/>
+        <arg name="gui"             value="true"/>
+        <arg name="headless"        value="false"/>
+        <arg name="debug"           value="false"/>
+    </include>
+
+    <include file="$(find jetauto_gazebo)/launch/spwan_model.launch">
+        <arg name="robot_name"  value="$(arg robot_name)"/>
+        <arg name="lidar_view"  value="$(arg lidar_view)"/>
+    </include>
+</launch>

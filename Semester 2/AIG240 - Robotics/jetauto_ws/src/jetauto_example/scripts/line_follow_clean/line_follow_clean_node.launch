@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="debug"   default="false"/>
+    <include file="$(find jetauto_peripherals)/launch/lidar.launch"/>
+    <include file="$(find jetauto_controller)/launch/jetauto_controller.launch"/>
+
+    <include file="$(find jetauto_example)/scripts/color_detect/color_detect_node.launch">
+        <arg name="use_depth_cam"   value="false"/>
+    </include>
+
+    <node pkg="jetauto_example" type="line_follow_clean_node.py" name="line_follow_clean_node" output="screen">
+        <param name="debug" value="$(arg debug)"/>
+    </node>
+</launch>

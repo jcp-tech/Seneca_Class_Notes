@@ -1,0 +1,4 @@
+uint8 times
+---
+bool success
+string result
