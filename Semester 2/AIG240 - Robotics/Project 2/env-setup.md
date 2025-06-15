@@ -40,7 +40,7 @@ This enables you to work from either directory seamlessly.
 
 Shut down any running containers, remove them for a clean state, and rebuild them to ensure a fresh environment.
 Use:
-Enter the `docker-compose.yml` Location
+Enter the [`docker-compose.yml`](https://github.com/jcp-tech/Seneca_Class_Notes/blob/master/Semester%202/AIG240%20-%20Robotics/Docker/docker-compose.yml) Location
 
 ```bash
 cd '/home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/Docker'
@@ -197,7 +197,7 @@ Commit all modifications in `jetauto_ws/src/` and any additional relevant files 
 
 
 ### **19. Complete WSL Setup for JetAuto Simulation**
->  Taken from the `.Dockerfile` to Update my WSL Ubuntu.
+>  Taken from the [`.Dockerfile`](https://github.com/jcp-tech/Seneca_Class_Notes/blob/master/Semester%202/AIG240%20-%20Robotics/Docker/ros-ubuntu.Dockerfile) to Update my WSL Ubuntu.
 * Prepare the workspace by ensuring all required files are present and creating a symbolic link for ease of access:
 
   ```bash
