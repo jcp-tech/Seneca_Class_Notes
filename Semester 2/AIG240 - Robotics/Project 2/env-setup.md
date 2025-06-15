@@ -1,37 +1,29 @@
 # **JetAuto Project & Simulation: Full Environment Setup Documentation**
 
----
-
 ## **A. Original Ubuntu System with Docker (as done in Lab4 & Project 2)**
-
----
 
 ### **1. Navigate to Docker Compose Directory**
 
-Navigate to the directory containing your `docker-compose.yml` file. This is your project’s root for container builds and orchestration.
+Navigate to the directory containing your [`docker-compose.yml`](https://github.com/jcp-tech/Seneca_Class_Notes/tree/master/Semester%202%2FAIG240%20-%20Robotics%2FDocker) file. This is your project’s root for container builds and orchestration.
 
----
 
 ### **2. (Re)build Docker Containers**
 
 Rebuild your Docker containers to ensure all dependencies and configurations are up to date.
 You may keep multiple Dockerfile/container variations for experimentation and troubleshooting.
 
----
 
 ### **3. Download Workspace Archive**
 
 Download the JetAuto workspace zip file from:
 [https://drive.google.com/file/d/1SSaqoji\_3H5vm9ZKAljeWPFmDUGfCc\_u/view?usp=drive\_link](https://drive.google.com/file/d/1SSaqoji_3H5vm9ZKAljeWPFmDUGfCc_u/view?usp=drive_link)
 
----
 
 ### **4. Extract the Workspace to Your Repository**
 
 Unzip the downloaded archive into your project repository.
 This ensures your workspaces remain organized in a single, easily accessible folder.
 
----
 
 ### **5. Create a Symbolic Link to `/home/jetauto/jetauto_ws/`**
 
@@ -43,7 +35,6 @@ ln -s "/home/jetauto/Desktop/Seneca_Class_Notes/Semester 2/AIG240 - Robotics/jet
 
 This enables you to work from either directory seamlessly.
 
----
 
 ### **6. Clean Restart of Docker Containers**
 
@@ -64,7 +55,6 @@ docker compose build
 docker compose up -d
 ```
 
----
 
 ### **7. Enter the Docker Container**
 
@@ -80,7 +70,6 @@ or my backup Container Build
 docker exec -it ros_official_container bash
 ```
 
----
 
 ### **8. Test ROS Launch Files**
 
@@ -90,7 +79,6 @@ Launch RViz using your JetAuto description package to verify that ROS and visual
 roslaunch jetauto_description display.launch model:=urdf/jetauto.urdf
 ```
 
----
 
 ### **9. Update Shebangs in All Python Files**
 
@@ -100,7 +88,6 @@ Since you’re running Ubuntu 18.04 with ROS Melodic (which defaults to Python 2
 find . -type f -name "*.py" -exec sed -i '1s|^#!/usr/bin/env python3$|#!/usr/bin/env python|' {} +
 ```
 
----
 
 ### **10. Make All Python Scripts Executable**
 
@@ -110,7 +97,6 @@ Grant executable permissions to all `.py` files throughout the workspace:
 find ~/jetauto_ws/src -type f -name "*.py" -exec chmod +x {} +
 ```
 
----
 
 ### **11. Launch Gazebo Simulation**
 
@@ -120,7 +106,6 @@ Start the Gazebo environment and verify the robot spawns correctly:
 roslaunch jetauto_gazebo worlds.launch
 ```
 
----
 
 ### **12. Test Teleoperation via Keyboard**
 
@@ -132,11 +117,9 @@ roslaunch jetauto_peripherals teleop_key_control.launch
 
 Use WASD keys to drive the robot.
 
----
 
 > **Note:** All environment variables, Python libraries, and APT dependencies are preconfigured in the [Docker build files](https://github.com/jcp-tech/Seneca_Class_Notes/tree/master/Semester%202%2FAIG240%20-%20Robotics%2FDocker).
 
----
 
 ### **13. Create Python Package for Project 2**
 
@@ -156,7 +139,6 @@ Use WASD keys to drive the robot.
 * f. Create the control Python file (e.g., `jetauto_control.py`) in the appropriate location.
 * g. Make the new script executable with `chmod +x`.
 
----
 
 ### **14. Build the Workspace**
 
@@ -174,13 +156,11 @@ catkin build
 
 Some error messages may appear, but as long as new folders and scripts are built, proceed.
 
----
 
 ### **15. Develop and Refine Code**
 
 Iterate on your code until the desired functionality is achieved and tested.
 
----
 
 ### **16. Run the Simulation and Node**
 
@@ -200,27 +180,21 @@ source devel/setup.bash
 rosrun project2_jetauto_control jetauto_square.py
 ```
 
----
 
 ### **17. Verify Successful Operation in Docker**
 
 Confirm that your Project 2 script works in the Ubuntu 20.04 Docker container.
 
----
 
 ### **18. Commit All Changes**
 
 Commit all modifications in `jetauto_ws/src/` and any additional relevant files to your version control system (e.g., git).
 
----
 
----
 
 ## **B. Setting Up on WSL (Windows Subsystem for Linux)**
 
----
 
----
 
 ### **19. Complete WSL Setup for JetAuto Simulation**
 >  Taken from the `.Dockerfile` to Update my WSL Ubuntu.
@@ -392,7 +366,6 @@ Commit all modifications in `jetauto_ws/src/` and any additional relevant files 
   source ~/.bashrc
   ```
 
----
 
 ### **20. Update Git Directory and Pull Latest Files**
 
@@ -404,13 +377,11 @@ git pull
 
 *Note: This does not include build, devel, logs, and similar files/folders.*
 
----
 
 ### **21. Extract ZIP Workspace Again and Merge**
 
 Extract the JetAuto workspace ZIP file. Overwrite with your files from Git to ensure that the workspace contains `build`, `devel`, `logs`, and all required runtime/generated files.
 
----
 
 ### **22. Convert Windows Line Endings in Python Files**
 
@@ -420,7 +391,6 @@ If you edited any files from Windows, convert all Python files to Unix (LF) line
 find ~/jetauto_ws -type f -name "*.py" -exec dos2unix {} +
 ```
 
----
 
 ### **23. Make All Python Scripts Executable**
 
@@ -430,7 +400,6 @@ Re-run the command to ensure all Python files in your workspace are executable:
 find ~/jetauto_ws -type f -name "*.py" -exec chmod +x {} +
 ```
 
----
 
 ### **24. Launch Simulation and Project Node as Before**
 
@@ -450,7 +419,6 @@ source devel/setup.bash
 rosrun project2_jetauto_control jetauto_square.py
 ```
 
----
 
 ### **25. Success: JetAuto Simulation Working on WSL!**
 
