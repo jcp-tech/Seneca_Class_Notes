@@ -96,6 +96,7 @@ RUN apt-get update && apt-get install -y \
     iproute2 \
     xauth \
     python-catkin-tools \
+    dos2unix \
     build-essential \
     nano vim tmux screen \
     wget curl git lsb-release sudo \
