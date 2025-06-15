@@ -123,12 +123,12 @@ Use WASD keys to drive the robot.
 
 ### **13. Create Python Package for Project 2**
 
-* a. Create the Project 2 control package:
+* a. Create the [Project 2](https://github.com/jcp-tech/Seneca_Class_Notes/tree/master/Semester%202/AIG240%20-%20Robotics/jetauto_ws/src/project2_jetauto_control) control package:
 
   ```bash
   catkin_create_pkg project2_jetauto_control rospy std_msgs geometry_msgs
   ```
-* b. Also create the Lab 4 control package:
+* b. Also create the [Lab 4](https://github.com/jcp-tech/Seneca_Class_Notes/tree/master/Semester%202/AIG240%20-%20Robotics/jetauto_ws/src/lab4_jetauto_control) control package:
 
   ```bash
   catkin_create_pkg lab4_jetauto_control rospy std_msgs geometry_msgs
@@ -136,7 +136,7 @@ Use WASD keys to drive the robot.
 * c. Delete the default `src` folder from the lab4 package.
 * d. Create a `scripts` folder in the project2 package.
 * e. Add symbolic links from project2’s `src` and `scripts` folders to lab4, ensuring code sharing between packages.
-* f. Create the control Python file (e.g., `jetauto_control.py`) in the appropriate location.
+* f. Create the control Python file (e.g., [`jetauto_control.py`](https://github.com/jcp-tech/Seneca_Class_Notes/blob/master/Semester%202/AIG240%20-%20Robotics/jetauto_ws/src/project2_jetauto_control/scripts/jetauto_square.py)) in the appropriate location.
 * g. Make the new script executable with `chmod +x`.
 
 
