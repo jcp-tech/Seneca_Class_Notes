@@ -1,7 +1,7 @@
 **/.env
 **/*ignore*/
 **/*.pkl
-# **/*.keras
+**/*.keras
 **/*__pycache__*/
 **/Peer Review - Milestone*.docx
 # /Semester 2/AIG200 - Capstone Project/Code
