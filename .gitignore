@@ -1,5 +1,6 @@
 **/.env
 **/*ignore*/
+**/*.pkl
 # **/*.keras
 **/*__pycache__*/
 **/Peer Review - Milestone*.docx
