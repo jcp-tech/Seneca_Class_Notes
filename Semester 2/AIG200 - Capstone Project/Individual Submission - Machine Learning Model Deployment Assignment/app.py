@@ -1,55 +1,63 @@
-# Run with `uvicorn app:app --reload` & Test on http://localhost:8000/docs
+# Run with `uvicorn app:app --reload` & test at http://localhost:8000/docs
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import tensorflow as tf
+from typing import List
 import pandas as pd
 import numpy as np
-import joblib, os
+import joblib
+import os
 
+# Set script directory
 script_dir = os.path.dirname(os.path.abspath(__file__))
+artifacts_dir = os.path.join(script_dir, "artifacts")
 
-# Initialize FastAPI app
+# --- Load Preprocessor and Model ---
+try:
+    preprocessor = joblib.load(os.path.join(artifacts_dir, "preprocessing_pipeline.pkl"))
+    model = tf.keras.models.load_model(os.path.join(artifacts_dir, "model.keras"))
+except Exception as e:
+    raise RuntimeError(f"❌ Failed to load model or preprocessor: {e}")
+
+# --- FastAPI App ---
 app = FastAPI(
-    title="Phishing Website Detection API",
-    description="Send website feature inputs and get a prediction (0 = legitimate, 1 = phishing).",
-    version="1.0.0"
+    title="Income Classification API",
+    description="Predict whether income >50K or <=50K based on demographic data.",
+    version="2.0.0"
 )
 
-# Define all feature names in order (based on your df)
-FEATURES = [
-    "having_ip_address", "url_length", "shortining_service", "having_at_symbol",
-    "double_slash_redirecting", "prefix_suffix", "having_sub_domain", "sslfinal_state",
-    "domain_registration_length", "favicon", "port", "https_token", "request_url",
-    "url_of_anchor", "links_in_tags", "sfh", "submitting_to_email", "abnormal_url",
-    "redirect", "on_mouseover", "rightclick", "popupwindow", "iframe", "age_of_domain",
-    "dnsrecord", "web_traffic", "page_rank", "google_index", "links_pointing_to_page",
-    "statistical_report"
-]
+# --- Feature Schema ---
+class IncomeInput(BaseModel):
+    age: str
+    workclass: str
+    education_num: int
+    marital_status: str
+    occupation: str
+    relationship: str
+    race: str
+    sex: str
+    hours_per_week: int
+    native_country: str
+    capital_profit: int
 
-# Load model pipeline
-try:
-    model = joblib.load(os.path.join(script_dir, "artifacts", "model.pkl"))
-except Exception as e:
-    raise RuntimeError(f"❌ Failed to load model: {e}")
+class InputBatch(BaseModel):
+    inputs: List[IncomeInput]
 
-# Define request schema
-class PhishingInput(BaseModel):
-    features: list[list[int]]
-
+# --- Predict Endpoint ---
 @app.post("/predict")
-def predict(data: PhishingInput):
+def predict(data: InputBatch):
     try:
-        input_array = np.array(data.features)
-        if input_array.shape[1] != len(FEATURES):
-            raise HTTPException(
-                status_code=422,
-                detail=f"Each row must have {len(FEATURES)} features"
-            )
+        # Convert list of Pydantic models to DataFrame
+        input_data = pd.DataFrame([item.dict() for item in data.inputs])
 
-        # Wrap as DataFrame with column names
-        input_df = pd.DataFrame(input_array, columns=FEATURES)
+        # Preprocess
+        X_processed = preprocessor.transform(input_data)
 
-        predictions = model.predict(input_df)
-        return {"predictions": predictions.tolist()}
+        # Predict using Keras model (assumes sigmoid output for binary classification)
+        raw_preds = model.predict(X_processed)
+        preds = [int(p > 0.5) for p in raw_preds.flatten()]
 
+        return {"predictions": preds}
+    
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -1,21 +1,29 @@
 # 🚀 GCP Docker + Cloud Run Deployment Guide
 
-**Project: Phishing Detection API**
+**Project: Income Classification API**
 **GCP Project ID:** `spendify-mapple-masala`
 
 ---
 
 ## 📌 Prerequisites
 
-Ensure you have the following tools installed and authenticated:
+Ensure the following tools are installed and you're authenticated:
 
 * [Google Cloud SDK (gcloud)](https://cloud.google.com/sdk/docs/install)
-* Docker (if building locally)
-* Logged into `gcloud` with:
+* Docker (for local builds)
+* Authenticated via:
 
 ```bash
 gcloud auth login
 ```
+
+* Initialized using:
+
+```bash
+gcloud init
+```
+
+* Billing account and project are already set ✅
 
 ---
 
@@ -39,93 +47,110 @@ gcloud config set project spendify-mapple-masala
 gcloud config get-value project
 ```
 
-### 🔓 Enable Required Services
+### 🔓 Enable Required GCP Services
 
 ```bash
-gcloud services enable run.googleapis.com containerregistry.googleapis.com
+gcloud services enable run.googleapis.com containerregistry.googleapis.com cloudbuild.googleapis.com
 ```
 
 ---
 
-## 📄 2. Deployment & Redeployment Guide
+## 📄 2. Build & Deploy the API
 
-### 🧹 Step 1: Delete Old Container Image (Optional)
+### 🧹 Step 1: (Optional) Delete Old Image
 
 ```bash
-gcloud container images delete gcr.io/spendify-mapple-masala/phishing-api --quiet
+gcloud container images delete gcr.io/spendify-mapple-masala/income-api --quiet
 ```
 
-> Use this only if you want to remove old builds before pushing a new one.
-> `--quiet` skips confirmation.
+> ⚠️ Use only if you want to free space or force a clean rebuild.
 
 ---
 
 ### 🔁 Step 2: Build & Push Docker Image
 
-From your app directory (must include `Dockerfile`, `app.py`, `requirements.txt`):
+Ensure you're in the project directory (contains `Dockerfile`, `app.py`, `requirements.txt`, `artifacts/`):
 
 ```bash
-gcloud builds submit --tag gcr.io/spendify-mapple-masala/phishing-api
+gcloud builds submit --tag gcr.io/spendify-mapple-masala/income-api
 ```
 
 > This:
 >
-> * Packages your app
-> * Builds it via Google Cloud Build
-> * Pushes it to: `gcr.io/spendify-mapple-masala/phishing-api`
+> * Packages your FastAPI app
+> * Builds it using Cloud Build
+> * Pushes it to Container Registry
 
 ---
 
-### 🔎 Step 3: Verify Image Exists in Container Registry
+### 🔎 Step 3: Verify Image in Registry
 
 ```bash
-gcloud container images list-tags gcr.io/spendify-mapple-masala/phishing-api
+gcloud container images list-tags gcr.io/spendify-mapple-masala/income-api
 ```
-
-> Ensures the image is correctly pushed and available for deployment.
 
 ---
 
 ### ☁️ Step 4: Deploy to Cloud Run
 
 ```bash
-gcloud run deploy phishing-api --image gcr.io/spendify-mapple-masala/phishing-api --platform managed --region us-central1 --allow-unauthenticated
+gcloud run deploy income-api --image gcr.io/spendify-mapple-masala/income-api --platform managed --region us-central1 --allow-unauthenticated
 ```
 
-> This:
->
-> * Deploys the container
-> * Makes it publicly accessible
-> * Returns a live URL like:
->   `https://phishing-api-xxxxx.a.run.app`
+> You’ll receive a live public endpoint like:
+> `https://income-api-xxxxx.a.run.app`
 
 ---
 
 ## ✅ 3. Testing the API
 
-Once deployed:
+### 📄 Open the Swagger UI:
 
-* Open API Docs (if using FastAPI or similar):
-  `https://phishing-api-xxxxx.a.run.app/docs`
+```plaintext
+https://income-api-xxxxx.a.run.app/docs
+```
 
-* Test via Postman:
+### 🧪 Test via Postman or `curl`:
 
-  ```http
-  POST https://phishing-api-xxxxx.a.run.app/predict
-  Content-Type: application/json
-  ```
+```http
+POST https://income-api-xxxxx.a.run.app/predict
+Content-Type: application/json
+```
 
-  Example Body:
+**Example Request Body:**
 
-  ```json
-  {
-    "url": "http://example.com"
-  }
-  ```
+```json
+{
+  "inputs": [
+    {
+      "age": "Young",
+      "workclass": "Private",
+      "education_num": 13,
+      "marital_status": "Never-married",
+      "occupation": "Sales",
+      "relationship": "Not-in-family",
+      "race": "White",
+      "sex": "Female",
+      "hours_per_week": 40,
+      "native_country": "United-States",
+      "capital_profit": 1
+    }
+  ]
+}
+```
+
+**Response:**
+
+```json
+{
+  "predictions": [0]
+}
+```
 
 ---
 
 ## 🔗 Useful Links
 
-* 🌐 [Cloud Run Dashboard](https://console.cloud.google.com/run?inv=1&invt=Ab0wYg&project=spendify-mapple-masala)
+* 🌐 [Cloud Run Dashboard](https://console.cloud.google.com/run?project=spendify-mapple-masala)
 * 📦 [Container Registry Viewer](https://console.cloud.google.com/gcr/images/spendify-mapple-masala)
+* 🛠 [Cloud Build History](https://console.cloud.google.com/cloud-build/builds?project=spendify-mapple-masala)
