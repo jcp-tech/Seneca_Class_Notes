@@ -2,6 +2,7 @@
 **/*ignore*/
 **/*.pkl
 **/*.keras
+**/*.h5
 **/*__pycache__*/
 **/Peer Review - Milestone*.docx
 # /Semester 2/AIG200 - Capstone Project/Code

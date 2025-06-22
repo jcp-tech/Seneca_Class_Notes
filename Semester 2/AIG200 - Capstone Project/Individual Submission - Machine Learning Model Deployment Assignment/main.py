@@ -1,6 +1,7 @@
 # Run with `uvicorn app:app --reload` & test at http://localhost:8000/docs
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from datetime import datetime
 import tensorflow as tf
 from typing import List
 import pandas as pd
@@ -47,6 +48,13 @@ class InputBatch(BaseModel):
 @app.post("/predict")
 def predict(data: InputBatch):
     try:
+        # 🔒 Expiration check
+        if datetime.now() > datetime(2025, 8, 27):
+            raise HTTPException(
+                status_code=403,
+                detail="⛔ This API is no longer active after August 27, 2025."
+            )
+        
         # Convert list of Pydantic models to DataFrame
         input_data = pd.DataFrame([item.dict() for item in data.inputs])
 
