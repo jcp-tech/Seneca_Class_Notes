@@ -1,55 +1,131 @@
-Here's your clean, copy-paste ready **GCP Docker + Cloud Run Deployment Documentation**:
+# 🚀 GCP Docker + Cloud Run Deployment Guide
+
+**Project: Phishing Detection API**
+**GCP Project ID:** `spendify-mapple-masala`
 
 ---
 
-## 📄 **Deployment & Redeployment Guide – Phishing Detection API**
+## 📌 Prerequisites
 
-### 🧹 1. Delete Existing Container Image from Google Container Registry
+Ensure you have the following tools installed and authenticated:
+
+* [Google Cloud SDK (gcloud)](https://cloud.google.com/sdk/docs/install)
+* Docker (if building locally)
+* Logged into `gcloud` with:
 
 ```bash
-gcloud container images delete gcr.io/algebraic-pier-396215/phishing-api --quiet
+gcloud auth login
 ```
-
-> `--quiet` skips confirmation prompts.
-> This removes the existing container image to free up space or force a fresh build.
 
 ---
 
-### 🔁 2. Rebuild Docker Image and Push to GCP
+## 🌐 1. Project Setup & API Enablement
 
-From your project folder (with `Dockerfile`, `app.py`, `requirements.txt`):
+### 🔍 List All GCP Projects
 
 ```bash
-gcloud builds submit --tag gcr.io/algebraic-pier-396215/phishing-api
+gcloud projects list
 ```
 
-> This will:
+### 🔄 Set Active Project
+
+```bash
+gcloud config set project spendify-mapple-masala
+```
+
+### ✅ Confirm Active Project
+
+```bash
+gcloud config get-value project
+```
+
+### 🔓 Enable Required Services
+
+```bash
+gcloud services enable run.googleapis.com containerregistry.googleapis.com
+```
+
+---
+
+## 📄 2. Deployment & Redeployment Guide
+
+### 🧹 Step 1: Delete Old Container Image (Optional)
+
+```bash
+gcloud container images delete gcr.io/spendify-mapple-masala/phishing-api --quiet
+```
+
+> Use this only if you want to remove old builds before pushing a new one.
+> `--quiet` skips confirmation.
+
+---
+
+### 🔁 Step 2: Build & Push Docker Image
+
+From your app directory (must include `Dockerfile`, `app.py`, `requirements.txt`):
+
+```bash
+gcloud builds submit --tag gcr.io/spendify-mapple-masala/phishing-api
+```
+
+> This:
 >
-> * Package your app
-> * Build it on Google Cloud Build
-> * Push it to Container Registry at `gcr.io/...`
+> * Packages your app
+> * Builds it via Google Cloud Build
+> * Pushes it to: `gcr.io/spendify-mapple-masala/phishing-api`
 
 ---
 
-### ☁️ 3. Deploy to Cloud Run (Public API)
+### 🔎 Step 3: Verify Image Exists in Container Registry
 
 ```bash
-gcloud run deploy phishing-api --image gcr.io/algebraic-pier-396215/phishing-api --platform managed --region us-central1 --allow-unauthenticated
+gcloud container images list-tags gcr.io/spendify-mapple-masala/phishing-api
 ```
 
-> This will:
+> Ensures the image is correctly pushed and available for deployment.
+
+---
+
+### ☁️ Step 4: Deploy to Cloud Run
+
+```bash
+gcloud run deploy phishing-api --image gcr.io/spendify-mapple-masala/phishing-api --platform managed --region us-central1 --allow-unauthenticated
+```
+
+> This:
 >
-> * Deploy your container as a live REST API
-> * Provide a public URL like:
+> * Deploys the container
+> * Makes it publicly accessible
+> * Returns a live URL like:
 >   `https://phishing-api-xxxxx.a.run.app`
 
 ---
 
-### ✅ Test After Deployment
+## ✅ 3. Testing the API
 
-* Go to `https://phishing-api-xxxxx.a.run.app/docs` in your browser
-* Or use Postman to send a `POST` request to `/predict`
+Once deployed:
+
+* Open API Docs (if using FastAPI or similar):
+  `https://phishing-api-xxxxx.a.run.app/docs`
+
+* Test via Postman:
+
+  ```http
+  POST https://phishing-api-xxxxx.a.run.app/predict
+  Content-Type: application/json
+  ```
+
+  Example Body:
+
+  ```json
+  {
+    "url": "http://example.com"
+  }
+  ```
 
 ---
 
-Let me know if you want a `README.md` version or markdown PDF export for your report!
+## 🔗 Useful Links
+
+* 🌐 [Cloud Run Dashboard](https://console.cloud.google.com/run?inv=1&invt=Ab0wYg&project=spendify-mapple-masala)
+* 📦 [Container Registry Viewer](https://console.cloud.google.com/gcr/images/spendify-mapple-masala)
