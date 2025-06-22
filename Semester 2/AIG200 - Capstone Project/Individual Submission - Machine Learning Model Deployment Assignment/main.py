@@ -1,4 +1,6 @@
 # Run with `uvicorn app:app --reload` & test at http://localhost:8000/docs
+print("✅ main.py is running")
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
@@ -16,8 +18,9 @@ artifacts_dir = os.path.join(script_dir, "artifacts")
 # --- Load Preprocessor and Model ---
 try:
     preprocessor = joblib.load(os.path.join(artifacts_dir, "preprocessing_pipeline.pkl"))
-    model = tf.keras.models.load_model(os.path.join(artifacts_dir, "model.keras"))
+    model = tf.keras.models.load_model(os.path.join(artifacts_dir, "model.h5"))
 except Exception as e:
+    print(f"❌ Failed to load model or preprocessor: {e}")
     raise RuntimeError(f"❌ Failed to load model or preprocessor: {e}")
 
 # --- FastAPI App ---
