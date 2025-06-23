@@ -1,30 +1,7 @@
 # 🚀 GCP Docker + Cloud Run Deployment Guide
-**Project:** Income Classification API  
+
+**Project:** Income Classification API
 **GCP Project ID:** `spendify-mapple-masala`
-
----
-
-## Table of Contents
-
-1. [Prerequisites](#-prerequisites)
-  a. [Install Google Cloud SDK (gcloud)](#-a-install-google-cloud-sdk-gcloud)
-  b. [Authenticate and Initialize GCP](#-b-authenticate-and-initialize-gcp)
-2. [Project Setup & API Enablement](#-1-project-setup--api-enablement)
-  a. [List All GCP Projects](#a-list-all-gcp-projects)
-  b. [Set Active Project](#b-set-active-project)
-  c. [Confirm Active Project](#c-confirm-active-project)
-  d. [Enable Required GCP Services](#d-enable-required-gcp-services)
-  e. [List Cloud Run Services](#e-list-cloud-run-services)
-  f. [Delete Cloud Run Service](#f-delete-cloud-run-service)
-3. [Build & Deploy the API](#-2-build--deploy-the-api)
-  a. [Delete Old Image (Optional)](#a-optional-delete-old-image)
-  b. [Build & Push Docker Image](#b-build--push-docker-image)
-  c. [Verify Image in Registry](#c-verify-image-in-registry)
-  d. [Deploy to Cloud Run](#d-deploy-to-cloud-run)
-4. [Testing the API](#-3-testing-the-api)
-  a. [Swagger UI](#a-swagger-ui)
-  b. [Test via Postman or curl](#b-test-via-postman-or-curl)
-5. [Useful Links](#-useful-links)
 
 ---
 
@@ -116,6 +93,7 @@ gcloud run services delete income-api --region=us-central1
 ```bash
 gcloud container images delete gcr.io/spendify-mapple-masala/income-api --quiet
 ```
+
 > ⚠️ Use only if you want to free space or force a clean rebuild.
 
 ---
@@ -195,17 +173,13 @@ curl -X POST https://income-api-xxxxx.a.run.app/predict \
 
 ## 📝 4. Checking Logs
 
-If you encounter errors or want to debug your Cloud Run service, use the Cloud Logging API.  
+If you encounter errors or want to debug your Cloud Run service, use the Cloud Logging API.
 **Note:** The correct command is `gcloud logging read` (not `gcloud logs read`).
 
 ### a. View Recent Logs for Your Service
 
 ```bash
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=income-api" \
-  --project=spendify-mapple-masala \
-  --limit=50 \
-  --freshness=1h \
-  --format="value(textPayload)"
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=income-api" --project=spendify-mapple-masala --limit=50 --freshness=1h --format="value(textPayload)"
 ```
 
 ### b. (Optional) Show Full JSON Output
@@ -213,11 +187,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 For more detailed debugging, use:
 
 ```bash
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=income-api" \
-  --project=spendify-mapple-masala \
-  --limit=50 \
-  --freshness=1h \
-  --format=json
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=income-api" --project=spendify-mapple-masala --limit=50 --freshness=1h --format=json
 ```
 
 This will display the actual error messages your container printed during startup, helping you identify issues such as missing files, crashes, or incorrect paths.
