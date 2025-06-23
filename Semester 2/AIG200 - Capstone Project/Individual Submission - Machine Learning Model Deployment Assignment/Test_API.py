@@ -89,4 +89,4 @@ data_options = {
 #         print("Raw response text:")
 #         print(response.text)
 # except Exception as e:
-#     print("❌ Request failed:", str(e))
+#     print("Request failed:", str(e))
