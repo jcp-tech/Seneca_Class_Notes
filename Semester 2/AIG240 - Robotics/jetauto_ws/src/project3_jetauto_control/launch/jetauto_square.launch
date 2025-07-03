@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Include the combined custom controller and odometry -->
+  <include file="$(find project3_jetauto_control)/launch/custom_controller.launch" />
+  <!-- Square movement script -->
+  <node pkg="project3_jetauto_control" type="jetauto_square.py" name="jetauto_square" output="screen" />
+</launch>
