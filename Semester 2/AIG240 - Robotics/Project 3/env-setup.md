@@ -1,0 +1,5 @@
+sudo systemctl stop start_app_node.service
+
+roslaunch lab5_jetauto_control custom_controller.launch
+
+rosrun lab5_jetauto_control jetauto_square.py

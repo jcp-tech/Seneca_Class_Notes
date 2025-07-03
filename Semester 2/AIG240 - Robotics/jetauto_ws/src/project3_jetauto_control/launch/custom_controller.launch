@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Combined launch for lab5_jetauto_control -->
+
+  <!-- Include everything from jetauto_controller -->
+  <include file="$(find jetauto_controller)/launch/jetauto_controller.launch"/>
+  
+  <!-- Include everything from jetauto_bringup -->
+  <include file="$(find jetauto_bringup)/launch/bringup.launch"/>
+
+  <!-- Ensure odometry is published by including odom_publish -->
+  <include file="$(find jetauto_controller)/launch/odom_publish.launch">
+    <!-- You can override these args if needed -->
+    <arg name="odom_frame"        value="odom"/>
+    <!--
+    <arg name="base_frame"        value="base_footprint"/>
+    <arg name="depth_camera_name" value="camera"/>
+    <arg name="lidar_view"        value="false"/>
+    -->
+  </include>
+</launch>
