@@ -1,0 +1,9 @@
+<!--
+<launch>
+    <include file="$(find jetauto_gazebo)/launch/worlds.launch" />
+    <rosparam command="load" file="$(find project2_jetauto_control)/config/jetauto_wheel_controllers.yaml"/>
+    <node name="wheel_controller_spawner" pkg="controller_manager" type="spawner"
+        respawn="false" output="screen"
+        args="wheel_left_front_velocity_controller wheel_right_front_velocity_controller wheel_left_back_velocity_controller wheel_right_back_velocity_controller" />
+</launch>
+-->
