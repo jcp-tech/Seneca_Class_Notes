@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion
-import math
+import math, time
 
 class SmartMover:
     def __init__(self, speed=0.2):
@@ -109,6 +109,7 @@ class SmartMover:
             print("No log data available.")
 
     def run(self, turn_angle_deg, move_angle_deg, move_distance):
+        rospy.loginfo("turn_angle_deg=%.2f°, move_angle_deg=%.2f°, move_distance=%.2f°", turn_angle_deg, move_angle_deg, move_distance)
         self.rotate_to_angle(turn_angle_deg)
         rospy.sleep(0.3)
         self.move_at_angle(move_angle_deg, move_distance)
@@ -120,7 +121,7 @@ class SmartMover:
 
 if __name__ == "__main__":
     try:
-        number_of_segments = 2
+        number_of_segments = 1
         mover = SmartMover(speed=0.2)
         raw_input("Press Enter to start square movement,")
         mover.mark_log_start()  # Start logging position
@@ -128,12 +129,16 @@ if __name__ == "__main__":
         for _ in range(number_of_segments):
             # Step 1 | Move Forward 1 Meter
             mover.run(turn_angle_deg=0, move_angle_deg=0, move_distance=1)
+            time.sleep(1)
             # Step 2 | Without Turning from Current Position Move Left 1 Meter
             mover.run(turn_angle_deg=0, move_angle_deg=90, move_distance=1)
+            time.sleep(1)
             # Step 3 | Turn 90 Degrees Clockwise and Don't Move
             mover.run(turn_angle_deg=-90, move_angle_deg=0, move_distance=0)
+            time.sleep(1)
             # Step 4 | Without Turning from Current Position Move Right 1 Meter
             mover.run(turn_angle_deg=0, move_angle_deg=-90, move_distance=1)
+            time.sleep(1)
             # Step5 | Move Forward 1 Meter while Turning Anticlockwise During the Journey
             desired_distance = 0.2
             overshoot = 0.08 # Adjusted Displacement to Account for the Size of the Robot
@@ -142,6 +147,7 @@ if __name__ == "__main__":
             # mover.run(turn_angle_deg=0, move_angle_deg=0, move_distance=overshoot) # TODO - Uncomment this line if you want to move forward the Extra {overshoot} Meters which we Deducted from the Previous Step.
             mover.run(turn_angle_deg=45, move_angle_deg=-45, move_distance=0.4) # After Turing 45 Degrees (first), Move Forward 0.4 Meters from the Position at a 45 Degree Angle.
             mover.run(turn_angle_deg=45, move_angle_deg=-90, move_distance=0.4) # After Turing 45 Degrees (again), Move Right 0.4 Meters from the Position.
+            time.sleep(1)
         mover.mark_log_end()
         rospy.loginfo("All segments complete.\n")
         mover.print_log_result(label="Square Movement * %d" % number_of_segments)  # Print the log result
