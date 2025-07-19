@@ -121,8 +121,8 @@ class SmartMover:
 
 if __name__ == "__main__":
     try:
-        number_of_segments = 1
-        mover = SmartMover(speed=0.2)
+        number_of_segments = 2
+        mover = SmartMover(speed=0.1)
         raw_input("Press Enter to start square movement,")
         mover.mark_log_start()  # Start logging position
         # Run Twice
@@ -141,7 +141,7 @@ if __name__ == "__main__":
             time.sleep(1)
             # Step5 | Move Forward 1 Meter while Turning Anticlockwise During the Journey
             desired_distance = 0.2
-            overshoot = 0.08 # Adjusted Displacement to Account for the Size of the Robot
+            overshoot = 0.15 # Adjusted Displacement to Account for the Size of the Robot
             move_distance = desired_distance - overshoot
             mover.run(turn_angle_deg=0, move_angle_deg=0, move_distance=move_distance) # Move Forward {move_distance} Meters without Turning, NOTE: This was Supposed to be 0.2 Meters but was Changed to {move_distance} Meters to Account for the Displacement of the Robot probably caused because of the Size.
             # mover.run(turn_angle_deg=0, move_angle_deg=0, move_distance=overshoot) # TODO - Uncomment this line if you want to move forward the Extra {overshoot} Meters which we Deducted from the Previous Step.
