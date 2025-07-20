@@ -129,6 +129,3 @@ Overall, progress closely aligns with Milestone 1 intentions, with adjustments f
 * API Code: `main_api.py`
 * Bot Logic: `bot.py`
 * Classification Logic: `receipt_classifier.py`
-
-### Current Planned Proccess
-![SPENDIFY Process Flow](../Code/process.png)

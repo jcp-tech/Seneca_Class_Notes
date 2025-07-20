@@ -16,7 +16,7 @@
   * Pipeline uses strict, well-defined input and output formats for reliable and explainable classification results.
   * Switched from the previous Ollama-based LLM approach (Milestone 2) to the new multi-agent ADK pipeline for better control, structure, and validation.
 
-  ![SPENDIFY Process Flow](../Code/adk_pipeline/flow.png)
+  ![SPENDIFY Process Flow](./images_for_doc/flow.png)
 * **Regression Model (Upcoming)**:
 
   * A regression model for spend prediction is planned and will be integrated in the next stage (along with the Dashboard).
@@ -157,4 +157,4 @@ Each document contains Dockerfile usage, environment variable setup, GCP Cloud R
 ---
 
 ## Proccess Flow
-![SPENDIFY Process Flow](../Code/process.png)
+![SPENDIFY Process Flow](./images_for_doc/process.png)
